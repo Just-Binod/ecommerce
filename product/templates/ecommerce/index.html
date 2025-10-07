@@ -1,0 +1,12 @@
+{% extends "home.html" %}
+<!--templates/index.html-->
+{% block main_section %} {% include "ecommerce/carousel.html" %}
+<!--main-->
+<h1>Product Page</h1>
+{% for p in product %}
+
+<h2>{{p.product_name}}</h2>
+<h2>{{p.product_price}}</h2>
+<h3>{{p.category}}</h3>
+<img src="{{p.image}}" alt="image" width="200" height="200" />
+{% endfor %} {% endblock main_section %}
