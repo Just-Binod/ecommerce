@@ -1,0 +1,141 @@
+{% extends "home.html" %}
+
+<!---->
+
+{% load crispy_forms_tags %} {% load static %}
+<!---->
+{% block main_section %}
+<!--    -->
+
+{% comment %}
+<form class="max-w-md mx-auto" method="POST" enctype="multipart/form-data">
+  {% csrf_token %} {% for msg in messages %}
+  <!----->
+  {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+  <div
+    class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
+    role="alert"
+  >
+    <svg
+      class="shrink-0 inline w-4 h-4 me-3"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="currentColor"
+      viewBox="0 0 20 20"
+    >
+      <path
+        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+      />
+    </svg>
+    <span class="sr-only">Info</span>
+    <div><span class="font-medium">Success alert!</span> {{ msg }}</div>
+  </div>
+  {% endif %} {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+  <div
+    class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+    role="alert"
+  >
+    <svg
+      class="shrink-0 inline w-4 h-4 me-3"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="currentColor"
+      viewBox="0 0 20 20"
+    >
+      <path
+        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+      />
+    </svg>
+    <span class="sr-only">Info</span>
+    <div><span class="font-medium">Danger alert!</span> {{ msg }}</div>
+  </div>
+  {% endif %} {% endfor %} {{ form | crispy }}
+
+  <button
+    type="submit"
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+  >
+    Submit
+  </button>
+</form>
+{% endcomment %}
+
+<!---->
+<div class="bg-gray-100 flex items-center justify-center p-10 sm:px-6 lg:px-8">
+  <div class="w-full max-w-md space-y-8">
+    <div class="bg-white shadow-md rounded-md p-6">
+      <img
+        class="mx-auto h-12 w-auto"
+        src="https://www.svgrepo.com/show/499664/user-happy.svg"
+        alt=""
+      />
+
+      <h2
+        class="my-3 text-center text-3xl font-bold tracking-tight text-gray-900"
+      >
+        Sign up for an account
+      </h2>
+      <div>
+        {% for msg in messages %}
+        <!----->
+        {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+        <div
+          class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
+          role="alert"
+        >
+          <svg
+            class="shrink-0 inline w-4 h-4 me-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+            />
+          </svg>
+          <span class="sr-only">Info</span>
+          <div><span class="font-medium">{{ msg }}</span></div>
+        </div>
+        {% endif %} {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+        <div
+          class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+          role="alert"
+        >
+          <svg
+            class="shrink-0 inline w-4 h-4 me-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+            />
+          </svg>
+          <span class="sr-only">Info</span>
+          <div><span class="font-medium">{{ msg }}</span></div>
+        </div>
+        {% endif %} {% endfor %}
+      </div>
+
+      <form class="space-y-6" method="POST">
+        <!---->
+        {% csrf_token %} {{ form | crispy }}
+
+        <div>
+          <button
+            type="submit"
+            class="flex w-full justify-center rounded-md border border-transparent bg-blue-400 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2"
+          >
+            Register Account
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!---->
+
+{% endblock main_section %}
