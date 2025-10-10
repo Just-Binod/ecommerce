@@ -1,288 +1,201 @@
-{% comment %} 
 
+
+<!---->
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
     {# --- SEO and Meta Tags --- #}
     <meta name="description" content="{% block meta_description %}Premium E-Commerce Platform offering quality products with exceptional customer service.{% endblock meta_description %}">
     <meta name="keywords" content="{% block meta_keywords %}ecommerce, shopping, online store, products{% endblock meta_keywords %}">
     <meta name="author" content="EcomPro">
     
-    {# --- Open Graph Meta Tags for Social Sharing --- #}
+    {# --- Open Graph for Social Sharing --- #}
     <meta property="og:title" content="{% block og_title %}EcomPro - Premium E-Commerce Platform{% endblock og_title %}">
     <meta property="og:description" content="{% block og_description %}Discover quality products with exceptional service.{% endblock og_description %}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    
-    {# --- Dynamic Title with Fallback --- #}
+
+    {# --- Dynamic Title --- #}
     <title>{% block title %}EcomPro - Premium E-Commerce Platform{% endblock title %}</title>
 
-    {# --- Favicon and App Icons --- #}
-    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}" />
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
+    {# --- Favicon --- #}
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
 
     {# --- CSS Assets --- #}
-    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.3.0/dist/flowbite.min.css" rel="stylesheet" />
-    
-    {# --- Google Fonts --- #}
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" media="all">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flowbite@2.3.0/dist/flowbite.min.css" media="all">
+
+    {# --- Inline CSS for nav-link-style (temporary, move to main.css if needed) --- #}
+    <style>
+        .nav-link-style {
+            @apply block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 dark:text-gray-200 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:p-0;
+        }
+    </style>
+
     {# --- Additional Head Content --- #}
-    {% block extra_head %}{% endblock extra_head %}
+    {% block extra_head %}
+    {% endblock extra_head %}
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col font-inter">
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col">
     
     {# --- Header/Navigation --- #}
-    <header class="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+    <header>
+        <nav class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 shadow-md" aria-label="Main navigation">
+            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 
                 {# --- Brand Logo --- #}
-                <div class="flex items-center">
-                    <a href="{% url 'homepage' %}" class="flex items-center space-x-3 group">
-                        <div class="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg group-hover:from-blue-700 group-hover:to-purple-700 transition-all duration-200">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                            </svg>
-                        </div>
-                        <span class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
-                            EcomPro
-                        </span>
-                    </a>
-                </div>
-
-                {# --- Desktop Navigation --- #}
-                <nav class="hidden md:flex items-center space-x-8">
-                    <a href="{% url 'homepage' %}" 
-                       class="text-sm font-medium transition-colors duration-200 
-                              {% if request.resolver_match.url_name == 'homepage' %}
-                                  text-blue-600 dark:text-blue-400
-                              {% else %}
-                                  text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white
-                              {% endif %}">
-                        Home
-                    </a>
-                    <a href="{% url 'productpage' %}" 
-                       class="text-sm font-medium transition-colors duration-200 
-                              {% if request.resolver_match.url_name == 'productpage' %}
-                                  text-blue-600 dark:text-blue-400
-                              {% else %}
-                                  text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white
-                              {% endif %}">
-                        Products
-                    </a>
-                    <a href="#" 
-                       class="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200">
-                        Categories
-                    </a>
-                    <a href="#" 
-                       class="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200">
-                        About
-                    </a>
-                </nav>
-
-                {# --- User Actions --- #}
-                <div class="flex items-center space-x-4">
-                    {# --- Search Icon --- #}
-                    <button class="p-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
-                    </button>
-
-                    {# --- Shopping Cart --- #}
-                    <button class="p-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200 relative">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
-                        <span class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                            0
-                        </span>
-                    </button>
-
-                    {# --- User Authentication --- #}
-                    <div class="flex items-center space-x-2">
-                        {% if user.is_authenticated %}
-                            <div class="relative group">
-                                <button class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
-                                    <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                                        <span class="text-white text-sm font-medium">
-                                            {{ user.username|first|upper }}
-                                        </span>
-                                    </div>
-                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-200 hidden sm:block">
-                                        {{ user.username }}
-                                    </span>
-                                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                    </svg>
-                                </button>
-                                
-                                {# --- Dropdown Menu --- #}
-                                <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                    <div class="py-1">
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150">
-                                            Profile
-                                        </a>
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150">
-                                            Orders
-                                        </a>
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150">
-                                            Settings
-                                        </a>
-                                        <div class="border-t border-gray-200 dark:border-gray-600 my-1"></div>
-                                        <a href="#" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150">
-                                            Sign Out
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="flex items-center space-x-3">
-                                <a href="{% url 'login' %}" class="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200">
-                                    Sign In
-                                </a>
-                                <a href="{% url 'register' %}" class="bg-gradient-to-br from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md">
-                                    Get Started
-                                </a>
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    {# --- Mobile Menu Button --- #}
-                    <button class="md:hidden p-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                        </svg>
-                    </button>
+                <a href="{% url 'homepage' %}" class="flex items-center space-x-2 rtl:space-x-reverse" aria-label="EcomPro Home">
+                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    <span class="self-center text-2xl font-extrabold text-gray-900 whitespace-nowrap dark:text-white">EcomPro</span>
+                </a>
+                
+                {# --- Mobile Menu Toggle (Flowbite Component) --- #}
+                <button data-collapse-toggle="navbar-ecommerce" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-ecommerce" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>
+                
+                {# --- Desktop Menu --- #}
+                <div class="hidden w-full md:block md:w-auto" id="navbar-ecommerce">
+                    <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-800 dark:border-gray-700">
+                        <li>
+                            <a href="{% url 'homepage' %}" 
+                               class="block py-2 px-3 {% if request.resolver_match.url_name == 'homepage' %}text-white bg-blue-700 md:bg-transparent md:text-blue-700 dark:text-white md:dark:text-blue-500 rounded-sm{% else %}nav-link-style{% endif %}" 
+                               aria-current="{% if request.resolver_match.url_name == 'homepage' %}page{% endif %}">
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'productpage' %}" 
+                               class="block py-2 px-3 {% if request.resolver_match.url_name == 'productpage' %}text-white bg-blue-700 md:bg-transparent md:text-blue-700 dark:text-white md:dark:text-blue-500 rounded-sm{% else %}nav-link-style{% endif %}" 
+                               aria-current="{% if request.resolver_match.url_name == 'productpage' %}page{% endif %}">
+                                Shop Now
+                            </a>
+                        </li>
+                        <li>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'logout' %}" class="nav-link-style">Logout</a>
+                            {% else %}
+                                <a href="{% url 'login' %}" class="nav-link-style">Login</a>
+                                <a href="{% url 'register' %}" class="nav-link-style">Register</a>
+                            {% endif %}
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </div>
+
+            {# --- Mobile Menu --- #}
+            <div class="hidden md:hidden" id="navbar-ecommerce-mobile">
+                <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+                    <li>
+                        <a href="{% url 'homepage' %}" 
+                           class="block py-2 px-3 {% if request.resolver_match.url_name == 'homepage' %}text-white bg-blue-700 rounded-sm{% else %}nav-link-style{% endif %}" 
+                           aria-current="{% if request.resolver_match.url_name == 'homepage' %}page{% endif %}">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'productpage' %}" 
+                           class="block py-2 px-3 {% if request.resolver_match.url_name == 'productpage' %}text-white bg-blue-700 rounded-sm{% else %}nav-link-style{% endif %}" 
+                           aria-current="{% if request.resolver_match.url_name == 'productpage' %}page{% endif %}">
+                            Shop Now
+                        </a>
+                    </li>
+                    <li>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'logout' %}" class="nav-link-style">Logout</a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="nav-link-style">Login</a>
+                            <a href="{% url 'register' %}" class="nav-link-style">Register</a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </header>
 
-    {# --- Main Content --- #}
-    <main class="flex-grow">
+    {# --- Main Content Area --- #}
+    <main class="flex-grow" role="main">
         {% block main_section %}
         {% endblock main_section %}
     </main>
 
     {# --- Footer --- #}
-    <footer class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer class="bg-white border-t border-gray-200 dark:bg-gray-800 dark:border-gray-700 mt-8">
+        <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+            <div class="sm:flex sm:items-center sm:justify-between">
+                {# --- Footer Logo/Brand --- #}
+                <a href="{% url 'homepage' %}" class="flex items-center mb-4 sm:mb-0 space-x-2 rtl:space-x-reverse" aria-label="EcomPro Home">
+                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    <span class="self-center text-2xl font-bold text-gray-900 whitespace-nowrap dark:text-white">EcomPro</span>
+                </a>
                 
-                {# --- Company Info --- #}
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                            </svg>
-                        </div>
-                        <span class="text-2xl font-bold text-gray-900 dark:text-white">EcomPro</span>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md text-sm leading-relaxed">
-                        Your trusted partner for premium e-commerce solutions. We deliver quality products with exceptional customer service.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors duration-200">
-                            <span class="sr-only">Facebook</span>
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors duration-200">
-                            <span class="sr-only">Twitter</span>
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors duration-200">
-                            <span class="sr-only">LinkedIn</span>
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-
-                {# --- Quick Links --- #}
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">
-                        Shop
-                    </h3>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200">All Products</a></li>
-                        <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200">New Arrivals</a></li>
-                        <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200">Featured</a></li>
-                        <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200">Sale</a></li>
-                    </ul>
-                </div>
-
-                {# --- Support --- #}
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">
-                        Support
-                    </h3>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200">Contact Us</a></li>
-                        <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200">Shipping Info</a></li>
-                        <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200">Returns</a></li>
-                        <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200">FAQ</a></li>
-                    </ul>
-                </div>
+                {# --- Footer Navigation Links --- #}
+                <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
+                    <li><a href="#" class="hover:underline me-4 md:me-6">About Us</a></li>
+                    <li><a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:underline me-4 md:me-6">Terms & Conditions</a></li>
+                    <li><a href="#" class="hover:underline">Contact Sales</a></li>
+                </ul>
             </div>
-
-            {# --- Bottom Bar --- #}
-            <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                        © 2024 EcomPro. All rights reserved.
-                    </p>
-                    <div class="flex space-x-6 mt-4 md:mt-0">
-                        <a href="#" class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors duration-200">
-                            Privacy Policy
-                        </a>
-                        <a href="#" class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors duration-200">
-                            Terms of Service
-                        </a>
-                        <a href="#" class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors duration-200">
-                            Cookie Policy
-                        </a>
-                    </div>
+            
+            <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+            
+            {# --- Copyright and Social Media Icons --- #}
+            <div class="sm:flex sm:items-center sm:justify-between">
+                <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+                    © 2024 <a href="{% url 'homepage' %}" class="hover:underline">EcomPro</a>. All Rights Reserved.
+                </span>
+                <div class="flex mt-4 sm:mt-0 space-x-5 justify-center sm:justify-end">
+                    <a href="#" class="text-gray-500 hover:text-blue-600 dark:hover:text-white transition duration-150" aria-label="Facebook">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
     </footer>
 
-    {# --- Scripts --- #}
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.3.0/dist/flowbite.min.js"></script>
+    {# --- Flowbite JS --- #}
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.3.0/dist/flowbite.min.js" defer></script>
     
-    {# --- Page Specific JavaScript --- #}
+    {# --- Page-Specific JavaScript --- #}
     {% block extra_js %}
+        <script>
+            // Initialize Flowbite mobile menu toggle
+            document.addEventListener('DOMContentLoaded', () => {
+                const toggleButton = document.querySelector('[data-collapse-toggle="navbar-ecommerce"]');
+                const menu = document.querySelector('#navbar-ecommerce-mobile');
+                if (toggleButton && menu) {
+                    toggleButton.addEventListener('click', () => {
+                        menu.classList.toggle('hidden');
+                    });
+                }
+            });
+        </script>
     {% endblock extra_js %}
 </body>
 </html>
- {% endcomment %}
 
 
 
+<!---->
 
 
 
-
-
-
-
-
-
+{% comment %} 
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -368,13 +281,11 @@
                                 Shop Now
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="nav-link-style md:p-0">Solutions</a>
-                        </li>
+                        
                         <div>
                           {% if user.isAuthenticated %}
                           <li>
-                            <a href="#" class="nav-link-style md:p-0">Logout</a>
+                            <a href="{% url 'logout' %}" class="nav-link-style md:p-0">Logout</a>
                         </li>
                         {% else %}
                         <li>
@@ -449,7 +360,7 @@
     {% endblock extra_js %}
 
 </body>
-</html>
+</html> {% endcomment %}
 
 
 

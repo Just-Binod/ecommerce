@@ -6,6 +6,7 @@ from django.contrib import messages
 from .filters import *
 from django.contrib.auth import authenticate, login as auth_login, logout 
 from user.forms import *
+# from adminpage.views import adminhome
 # Create your views here.
 
 
@@ -35,7 +36,10 @@ def login(request):
         user=authenticate(request,username=data['username'],password=data['password'])
         if user is not None:
             auth_login(request,user)
-            return redirect('/')
+            if user.is_staff:
+                return redirect('admins')
+            else:
+                return redirect('/')
         else:
             messages.add_message(request, messages.ERROR,' OOPs, either username or password is INVALID !.')
             return render(request,'user/loginform.html',{'form':form})
@@ -46,6 +50,11 @@ def login(request):
     return render(request,'user/loginform.html',context)
     
     
+
+def logoutuser(request):
+    logout(request)
+    return redirect('/login')
+
 
 
 def homepage(request):
