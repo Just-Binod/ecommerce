@@ -1,7 +1,192 @@
 
-
 <!---->
 {% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="index, follow">
+    
+    {# --- SEO and Meta Tags --- #}
+    <meta name="description" content="{% block meta_description %}Premium E-Commerce Platform offering quality products with exceptional customer service.{% endblock meta_description %}">
+    <meta name="keywords" content="{% block meta_keywords %}ecommerce, shopping, online store, products{% endblock meta_keywords %}">
+    <meta name="author" content="EcomPro">
+    
+    {# --- Open Graph for Social Sharing --- #}
+    <meta property="og:title" content="{% block og_title %}EcomPro - Premium E-Commerce Platform{% endblock og_title %}">
+    <meta property="og:description" content="{% block og_description %}Discover quality products with exceptional service.{% endblock og_description %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="{% static 'images/og-image.jpg' %}">
+
+    {# --- Twitter Card --- #}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}EcomPro - Premium E-Commerce Platform{% endblock twitter_title %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Discover quality products with exceptional service.{% endblock twitter_description %}">
+    <meta name="twitter:image" content="{% static 'images/og-image.jpg' %}">
+
+    {# --- Dynamic Title --- #}
+    <title>{% block title %}EcomPro - Premium E-Commerce Platform{% endblock title %}</title>
+
+    {# --- Favicon and Web Manifest --- #}
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+
+    {# --- CSS Assets --- #}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" media="all">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" media="all" integrity="sha384-...[latest integrity hash]" crossorigin="anonymous">
+
+    {# --- Preload critical assets --- #}
+    <link rel="preload" href="{% static 'css/main.css' %}" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js" as="script">
+
+    {# --- Additional Head Content --- #}
+    {% block extra_head %}
+    {% endblock extra_head %}
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col font-sans antialiased">
+    
+    {# --- Header/Navigation --- #}
+    <header>
+        <nav class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 shadow-sm" aria-label="Main navigation">
+            <div class="max-w-screen-xl mx-auto p-4 flex items-center justify-between flex-wrap">
+                
+                {# --- Brand Logo --- #}
+                <a href="{% url 'homepage' %}" class="flex items-center space-x-3 rtl:space-x-reverse" aria-label="EcomPro Home">
+                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    <span class="text-2xl font-extrabold text-gray-900 dark:text-white">EcomPro</span>
+                </a>
+                
+                {# --- Mobile Menu Toggle (Flowbite Component) --- #}
+                <button data-collapse-toggle="navbar-ecommerce" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-ecommerce" aria-expanded="false">
+                    <span class="sr-only">Toggle main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>
+                
+                {# --- Navigation Menu (Unified for Desktop and Mobile) --- #}
+                <div class="hidden w-full md:flex md:w-auto md:order-1" id="navbar-ecommerce">
+                    <ul class="flex flex-col md:flex-row md:space-x-8 p-4 md:p-0 mt-4 md:mt-0 border border-gray-100 md:border-0 rounded-lg bg-gray-50 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700 font-medium">
+                        <li>
+                            <a href="{% url 'homepage' %}" class="nav-link-style {% if request.resolver_match.url_name == 'homepage' %}active{% endif %}" aria-current="{% if request.resolver_match.url_name == 'homepage' %}page{% endif %}">
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'productpage' %}" class="nav-link-style {% if request.resolver_match.url_name == 'productpage' %}active{% endif %}" aria-current="{% if request.resolver_match.url_name == 'productpage' %}page{% endif %}">
+                                Shop Now
+                            </a>
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'logout' %}" class="nav-link-style">Logout</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{% url 'login' %}" class="nav-link-style">Login</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'register' %}" class="nav-link-style">Register</a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <a href="{% url 'cartlist' %}" class="nav-link-style flex items-center {% if request.resolver_match.url_name == 'cartlist' %}active{% endif %}" aria-current="{% if request.resolver_match.url_name == 'cartlist' %}page{% endif %}" aria-label="View Shopping Cart">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                          
+                                <span class="cart-count {% if cart_count == 0 %}hidden{% endif %} inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-blue-600 rounded-full">
+                                    {{ cart_count|default:0 }}
+                                </span>
+                           
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    {# --- Main Content Area --- #}
+    <main class="flex-grow container mx-auto px-4 py-8" role="main">
+        {% block main_section %}
+        {% endblock main_section %}
+    </main>
+
+    {# --- Footer --- #}
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
+        <div class="max-w-screen-xl mx-auto p-4 md:py-8">
+            <div class="sm:flex sm:items-center sm:justify-between">
+                {# --- Footer Logo/Brand --- #}
+                <a href="{% url 'homepage' %}" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse" aria-label="EcomPro Home">
+                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    <span class="text-2xl font-bold text-gray-900 dark:text-white">EcomPro</span>
+                </a>
+                
+                {# --- Footer Navigation Links --- #}
+                <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
+                    <li><a href="#" class="hover:underline me-4 md:me-6">About Us</a></li>
+                    <li><a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:underline me-4 md:me-6">Terms & Conditions</a></li>
+                    <li><a href="#" class="hover:underline">Contact Sales</a></li>
+                </ul>
+            </div>
+            
+            <hr class="my-6 border-gray-200 dark:border-gray-700" />
+            
+            {# --- Copyright and Social Media --- #}
+            <div class="sm:flex sm:items-center sm:justify-between">
+                <span class="text-sm text-gray-500 dark:text-gray-400">
+                    © {% now "Y" %} <a href="{% url 'homepage' %}" class="hover:underline">EcomPro</a>. All Rights Reserved.
+                </span>
+                <div class="flex mt-4 sm:mt-0 space-x-5 justify-center">
+                    <a href="https://facebook.com/ecompro" class="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400" aria-label="Visit EcomPro on Facebook">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="https://twitter.com/ecompro" class="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400" aria-label="Visit EcomPro on Twitter">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.643 4.937c-.835.37-1.732.62-2.675.733a4.67 4.67 0 002.048-2.578 9.3 9.3 0 01-2.958 1.13 4.66 4.66 0 00-7.938 4.25 13.229 13.229 0 01-9.602-4.868c-.4.69-.631 1.49-.631 2.342 0 1.616.823 3.043 2.072 3.878a4.649 4.649 0 01-2.108-.583v.06c0 2.257 1.605 4.14 3.737 4.568a4.678 4.678 0 01-2.102.795c-.51 0-1.008-.05-1.496-.144 1.008 3.15 3.927 5.442 7.379 5.506a13.25 13.25 0 01-8.21 2.83c-.533 0-1.057-.031-1.574-.093 2.923 1.874 6.378 2.966 10.095 2.966 12.107 0 18.73-10.03 18.73-18.73 0-.285-.006-.568-.018-.849a13.39 13.39 0 003.283-3.414z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    {# --- JavaScript Assets --- #}
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js" integrity="sha384-...[latest integrity hash]" crossorigin="anonymous" defer></script>
+    
+    {# --- Page-Specific JavaScript --- #}
+    {% block extra_js %}
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const toggleButton = document.querySelector('[data-collapse-toggle="navbar-ecommerce"]');
+                const menu = document.querySelector('#navbar-ecommerce');
+                if (toggleButton && menu) {
+                    toggleButton.addEventListener('click', () => {
+                        menu.classList.toggle('hidden');
+                    });
+                }
+            });
+        </script>
+    {% endblock extra_js %}
+</body>
+</html>
+<!---->
+
+
+<!---->
+{% comment %} {% load static %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -67,6 +252,13 @@
                 {# --- Desktop Menu --- #}
                 <div class="hidden w-full md:block md:w-auto" id="navbar-ecommerce">
                     <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-800 dark:border-gray-700">
+                         <li>
+                            <a href="{% url 'cartlist' %}" 
+                               class="block py-2 px-3 text-white bg-blue-700 md:bg-transparent md:text-blue-700 dark:text-white md:dark:text-blue-500 rounded-sm" >
+                               
+                                Cart
+                            </a>
+                        </li>
                         <li>
                             <a href="{% url 'homepage' %}" 
                                class="block py-2 px-3 {% if request.resolver_match.url_name == 'homepage' %}text-white bg-blue-700 md:bg-transparent md:text-blue-700 dark:text-white md:dark:text-blue-500 rounded-sm{% else %}nav-link-style{% endif %}" 
@@ -187,7 +379,7 @@
         </script>
     {% endblock extra_js %}
 </body>
-</html>
+</html> {% endcomment %}
 
 
 
@@ -360,8 +552,8 @@
     {% endblock extra_js %}
 
 </body>
-</html> {% endcomment %}
-
+</html> 
+{% endcomment %}
 
 
 

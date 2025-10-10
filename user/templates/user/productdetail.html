@@ -130,12 +130,15 @@
         <!-- Buttons -->
         <div class="space-y-6 pt-8 border-t border-gray-200">
           <div class="flex items-center space-x-4">
-            <button
-              class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-4 px-8 rounded-xl font-semibold text-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl flex items-center justify-center space-x-3"
-            >
-              <span>🛒</span>
-              <span>Add to Cart</span>
-            </button>
+            <a href="{% url 'add_to_cart' product.id %}">
+              <button
+                class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-4 px-8 rounded-xl font-semibold text-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl flex items-center justify-center space-x-3"
+              >
+                <span>🛒</span>
+                <span>Add to Cart</span>
+              </button>
+            </a>
+
             <button
               class="w-14 h-14 bg-gray-100 hover:bg-pink-100 flex items-center justify-center rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl group"
               title="Add to Wishlist"
