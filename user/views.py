@@ -102,15 +102,15 @@ def add_to_cart(request,product_id):
         messages.add_message(request,messages.SUCCESS,'Product has been added to cart ! ')
         return redirect('/productpage')
     
-@login_required
-def cart_list(request):
-    # product=Product.objects.get(id=product_id)
-    user=request.user
-    items=Cart.objects.filter(user=user)
-    data={
-        'items':items
-    }
-    return render(request,'user/cart.html',data)
+# @login_required
+# def cart_list(request):
+#     # product=Product.objects.get(id=product_id)
+#     user=request.user
+#     items=Cart.objects.filter(user=user)
+#     data={
+#         'items':items
+#     }
+#     return render(request,'user/cart.html',data)
 
 
 
@@ -242,7 +242,9 @@ from django.db.models import Sum
 def cartlist(request):
     cart_items = Cart.objects.filter(user=request.user).select_related('product')
     cart_count = cart_items.count()
-    cart_subtotal = sum(item.quantity * item.product.product_price for item in cart_items)
+    
+    # Calculate subtotal using the total_price method from your model
+    cart_subtotal = sum(item.total_price() for item in cart_items)
 
     context = {
         'items': cart_items,
@@ -250,6 +252,18 @@ def cartlist(request):
         'cart_subtotal': cart_subtotal,
     }
     return render(request, 'user/cart.html', context)
+# @login_required
+# def cartlist(request):
+#     cart_items = Cart.objects.filter(user=request.user).select_related('product')
+#     cart_count = cart_items.count()
+#     cart_subtotal = sum(item.quantity * item.product.product_price for item in cart_items)
+
+#     context = {
+#         'items': cart_items,
+#         'cart_count': cart_count,
+#         'cart_subtotal': cart_subtotal,
+#     }
+#     return render(request, 'user/cart.html', context)
 
 @login_required
 def get_cart_count(request):
@@ -289,49 +303,207 @@ def clear_cart(request):
     messages.success(request, "Your cart has been cleared.")
     return redirect('cartlist')
 
-@login_required
-def checkout(request):
-    if request.method == 'POST':
-        address = request.POST.get('address')
-        contact_no = request.POST.get('contact_no')
-        email = request.POST.get('email')
-        payment_method = request.POST.get('payment_method')
+# @login_required
+# def checkout(request):
+#     if request.method == 'POST':
+#         address = request.POST.get('address')
+#         contact_no = request.POST.get('contact_no')
+#         email = request.POST.get('email')
+#         payment_method = request.POST.get('payment_method')
 
-        if not all([address, contact_no, email, payment_method]):
-            messages.error(request, "Please fill in all required fields.")
-            return redirect('checkout')
+#         if not all([address, contact_no, email, payment_method]):
+#             messages.error(request, "Please fill in all required fields.")
+#             return redirect('checkout')
 
-        cart_items = Cart.objects.filter(user=request.user).select_related('product')
-        if not cart_items:
-            messages.error(request, "Your cart is empty.")
-            return redirect('cartlist')
+#         cart_items = Cart.objects.filter(user=request.user).select_related('product')
+#         if not cart_items:
+#             messages.error(request, "Your cart is empty.")
+#             return redirect('cartlist')
 
-        for item in cart_items:
-            Order.objects.create(
-                user=request.user,
-                product=item.product,
-                quantity=item.quantity,
-                address=address,
-                total_price=item.quantity * item.product.product_price,
-                payment_method=payment_method,
-                contact_no=contact_no,
-                email=email,
-                payment_status='Pending'
-            )
+#         for item in cart_items:
+#             Order.objects.create(
+#                 user=request.user,
+#                 product=item.product,
+#                 quantity=item.quantity,
+#                 address=address,
+#                 total_price=item.quantity * item.product.product_price,
+#                 payment_method=payment_method,
+#                 contact_no=contact_no,
+#                 email=email,
+#                 payment_status='Pending'
+#             )
 
-        cart_items.delete()
-        messages.success(request, "Your order has been placed successfully!")
-        return redirect('order_confirmation')
+#         cart_items.delete()
+#         messages.success(request, "Your order has been placed successfully!")
+#         return redirect('order_confirmation')
 
-    cart_items = Cart.objects.filter(user=request.user).select_related('product')
-    cart_subtotal = sum(item.quantity * item.product.product_price for item in cart_items)
-    context = {
-        'items': cart_items,
-        'cart_count': cart_items.count(),
-        'cart_subtotal': cart_subtotal,
-    }
-    return render(request, 'user/checkout.html', context)
+#     cart_items = Cart.objects.filter(user=request.user).select_related('product')
+#     cart_subtotal = sum(item.quantity * item.product.product_price for item in cart_items)
+#     context = {
+#         'items': cart_items,
+#         'cart_count': cart_items.count(),
+#         'cart_subtotal': cart_subtotal,
+#     }
+#     return render(request, 'user/checkout.html', context)
 
 @login_required
 def order_confirmation(request):
     return render(request, 'order_confirmation.html')
+
+
+
+# def orderitem(request,product_id,cart_id):
+#     product=Product.objects.get(id=product_id)
+#     cart=Cart.objects.get(id=cart_id)
+#     user=request.user
+#     if request.method=="POST":
+#         form=OrderForm(request.POST)
+#         if form.is_valid():
+#             data=form.cleaned_data
+#             Order.objects.create(
+#                 user=user,
+#                 product=product,
+#                 quantity=cart.quantity,
+#                 address=data['address'],
+#                 total_price=cart.quantity * product.product_price,
+#                 payment_method=data['payment_method'],
+#                 contact_no=data['contact_no'],
+#                 email=data['email'],
+#                 payment_status='Pending'
+#             )
+#             cart.delete()
+#             messages.add_message(request,messages.SUCCESS,'Your order has been placed successfully ! ')
+#             return redirect('/productpage')
+#         else:
+#             messages.add_message(request,messages.ERROR,' Please provide correct credentials !.')
+#             return render(request,'user/orderform.html',{'form':form})
+        
+#     context={
+#         'form':OrderForm,
+#         'product':product,
+#         'cart':cart
+#     }
+#     return render(request,'user/orderform.html',context)    
+
+
+# @login_required
+# def orderitem(request,product_id,cart_id):
+#     product=Product.objects.get(id=product_id)
+#     cart=Cart.objects.get(id=cart_id)
+#     user=request.user
+#     if request.method=="POST":
+#         form=OrderForm(request.POST)
+#         quantity=request.POST.get('quantity')
+#         price=product.product_price
+#         total_price=int(quantity)*float(price)
+#         contact_no=request.POST.get('contact_no')
+#         address=request.POST.get('address')
+#         payment_method=request.POST.get('payment_method')
+#         email=request.POST.get('email')
+
+        
+#         if form.is_valid():
+#             data=form.cleaned_data
+#             order=Order.objects.create(
+#                 user=user,
+#                 product=product,
+#                 quantity=quantity,
+#                 address=address,
+#                 total_price=total_price,
+#                 payment_method=payment_method,
+#                 contact_no=contact_no,
+#                 email=email,
+#                 # payment_status='Pending'
+#             )
+#             if order.payment_method=="Cash On Delivery":
+#                 cart.delete()
+#                 messages.add_message(request,messages.SUCCESS,'Your order has been placed successfully ! , Be ready with cash on delivery')
+#                 return redirect('/cartlist')
+#             elif order.payment_method=="Esewa":
+#                 cart.delete()
+#                 messages.add_message(request,messages.SUCCESS,'Your order has been placed successfully ! , Proceed to pay with Esewa')
+#                 return redirect('/cartlist')
+#             elif order.payment_method=="khalthi":
+#                 cart.delete()
+#                 messages.add_message(request,messages.SUCCESS,'Your order has been placed successfully ! , Proceed to pay with khalthi')
+#                 return redirect('/cartlist')
+            
+#             else:
+#                 messages.add_message(request,messages.ERROR,' Invalid payment options !.')
+#                 return render(request,'user/orderform.html',{'form':form})
+#             # return redirect('/cartlist')
+
+#         else:
+#             form=OrderForm()
+#             context = {
+#             'form': form,
+#             'product': product,
+#             'cart': cart
+#         }
+            
+       
+        
+    
+#     return render(request,'user/orderform.html',context)
+
+
+
+
+
+#
+@login_required
+def orderitem(request, product_id, cart_id):
+    product = Product.objects.get(id=product_id)
+    cart = Cart.objects.get(id=cart_id)
+    user = request.user
+    
+    # Initialize form for GET requests
+    form = OrderForm()
+    
+    if request.method == "POST":
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            quantity = request.POST.get('quantity')
+            price = product.product_price
+            total_price = int(quantity) * float(price)
+            contact_no = request.POST.get('contact_no')
+            address = request.POST.get('address')
+            payment_method = request.POST.get('payment_method')
+            email = request.POST.get('email')
+
+            order = Order.objects.create(
+                user=user,
+                product=product,
+                quantity=quantity,
+                address=address,
+                total_price=total_price,
+                payment_method=payment_method,
+                contact_no=contact_no,
+                email=email,
+                # payment_status='Pending'
+            )
+            
+            if order.payment_method == "Cash On Delivery":
+                cart.delete()
+                messages.success(request, 'Your order has been placed successfully! Be ready with cash on delivery')
+                return redirect('/cartlist')
+            elif order.payment_method == "Esewa":
+                cart.delete()
+                messages.success(request, 'Your order has been placed successfully! Proceed to pay with Esewa')
+                return redirect('/cartlist')
+            elif order.payment_method == "khalthi":
+                cart.delete()
+                messages.success(request, 'Your order has been placed successfully! Proceed to pay with khalthi')
+                return redirect('/cartlist')
+            else:
+                messages.error(request, 'Invalid payment option!')
+        else:
+            messages.error(request, 'Please provide correct credentials!')
+    
+    # Context for both GET and POST requests
+    context = {
+        'form': form,
+        'product': product,
+        'cart': cart
+    }
+    return render(request, 'user/orderform.html', context)
