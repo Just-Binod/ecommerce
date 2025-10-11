@@ -61,8 +61,12 @@ def logoutuser(request):
 
 def homepage(request):
     product=Product.objects.all().order_by('-id')[:4]
+    cart_items = Cart.objects.filter(user=request.user).select_related('product')
+    cart_count = cart_items.count()
     data={
-        'product':product
+        'product':product,
+         'items': cart_items,
+        'cart_count': cart_count,
     }
 
     return render(request,'user/homepage.html',data)
@@ -71,11 +75,15 @@ def homepage(request):
 @login_required
 def productpage(request):
     product=Product.objects.all().order_by('-id')
+    cart_items = Cart.objects.filter(user=request.user).select_related('product')
+    cart_count = cart_items.count()
     product_filter=ProductFilter(request.GET,queryset=product)
     product_final=product_filter.qs
     data={
         'product':product_final,
-        'product_filter':product_filter
+        'product_filter':product_filter,
+         'items': cart_items,
+        'cart_count': cart_count,
     }
 
     return render(request,'user/productpage.html',data)
@@ -507,3 +515,14 @@ def orderitem(request, product_id, cart_id):
         'cart': cart
     }
     return render(request, 'user/orderform.html', context)
+
+
+
+@login_required
+def orderlist(request):
+    user=request.user
+    orders=Order.objects.filter(user=user).order_by('-id')
+    context={
+        'orders':orders
+    }   
+    return render(request,'user/myorder.html',context)

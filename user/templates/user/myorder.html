@@ -1,0 +1,199 @@
+{% extends "home.html" %} {% load static %} {% block main_section %}
+<section class="w-full flex justify-center bg-gray-50 dark:bg-gray-900">
+  <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="flex justify-between items-center mb-6 sm:mb-8">
+      <h2
+        class="text-2xl sm:text-3xl 2xl:text-4xl font-bold text-gray-900 dark:text-white"
+      >
+        My Orders
+      </h2>
+    </div>
+
+    <!----->
+
+    {% for msg in messages %}
+    <!----->
+    {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+    <div
+      class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
+      role="alert"
+    >
+      <svg
+        class="shrink-0 inline w-4 h-4 me-3"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+        />
+      </svg>
+      <span class="sr-only">Info</span>
+      <div><span class="font-medium">{{ msg }}</span></div>
+    </div>
+    {% endif %} {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+    <div
+      class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+      role="alert"
+    >
+      <svg
+        class="shrink-0 inline w-4 h-4 me-3"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+        />
+      </svg>
+      <span class="sr-only">Info</span>
+      <div><span class="font-medium">{{ msg }}</span></div>
+    </div>
+    {% endif %} {% endfor %}
+    <!---->
+
+    <!-- Orders Content -->
+    {% if orders %}
+    <div class="grid md:grid-cols-[2fr_1fr] gap-6 lg:gap-8 items-start">
+      <!-- Orders Table -->
+      <div class="md:col-span-2">
+        <div
+          class="relative overflow-x-auto shadow-md rounded-lg bg-white dark:bg-gray-800"
+        >
+          <table
+            class="w-full text-sm 2xl:text-base text-left text-gray-600 dark:text-gray-300"
+          >
+            <thead
+              class="text-xs 2xl:text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+            >
+              <tr>
+                <th scope="col" class="px-4 py-3 sm:px-6 2xl:px-8">Image</th>
+                <th scope="col" class="px-4 py-3 sm:px-6 2xl:px-8">Product</th>
+                <th scope="col" class="px-4 py-3 sm:px-6 2xl:px-8">Price</th>
+                <th scope="col" class="px-4 py-3 sm:px-6 2xl:px-8">
+                  Payment Status
+                </th>
+                <th scope="col" class="px-4 py-3 sm:px-6 2xl:px-8">
+                  Payment Method
+                </th>
+                <th scope="col" class="px-4 py-3 sm:px-6 2xl:px-8">Address</th>
+                <th scope="col" class="px-4 py-3 sm:px-6 2xl:px-8">
+                  Contact no
+                </th>
+                <th scope="col" class="px-4 py-3 sm:px-6 2xl:px-8">Email</th>
+
+                <th scope="col" class="px-4 py-3 sm:px-6 2xl:px-8">Quantity</th>
+                <th scope="col" class="px-4 py-3 sm:px-6 2xl:px-8">
+                  Order Date
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for o in orders %}
+              <tr
+                class="border-b dark:border-gray-700 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
+              >
+                <td
+                  class="px-4 py-4 sm:px-6 2xl:px-8 flex items-center space-x-4"
+                >
+                  {% if o.product.image %}
+                  <img
+                    src="{{ o.product.image.url }}"
+                    alt="{{ o.product.product_name }}"
+                    class="w-12 h-12 sm:w-16 sm:h-16 2xl:w-20 2xl:h-20 object-contain rounded"
+                  />
+                  {% else %}
+                  <div
+                    class="w-12 h-12 sm:w-16 sm:h-16 2xl:w-20 2xl:h-20 bg-gray-200 rounded flex items-center justify-center"
+                  >
+                    <span class="text-xs 2xl:text-sm text-gray-500"
+                      >No Image</span
+                    >
+                  </div>
+                  {% endif %}
+                </td>
+                <td class="px-4 py-4 sm:px-6 2xl:px-8">
+                  <div>
+                    <h3
+                      class="text-base 2xl:text-lg font-medium text-gray-900 dark:text-white"
+                    >
+                      {{ o.product.product_name }}
+                    </h3>
+                    <p
+                      class="text-xs 2xl:text-sm text-gray-500 dark:text-gray-400"
+                    >
+                      {{ o.product.category }}
+                    </p>
+                  </div>
+                </td>
+
+                <td class="px-4 py-4 sm:px-6 2xl:px-8">
+                  ${{ o.total_price|floatformat:2 }}
+                </td>
+                <td class="px-4 py-4 sm:px-6 2xl:px-8">
+                  <span
+                    class="{% if o.payment_status == 'Pending' %}text-yellow-600{% elif o.payment_status == 'Completed' %}text-green-600{% else %}text-red-600{% endif %} font-medium"
+                  >
+                    {{ o.payment_status }}
+                  </span>
+                </td>
+                <td class="px-4 py-4 sm:px-6 2xl:px-8">
+                  {{ o.payment_method }}
+                </td>
+
+                <td class="px-4 py-4 sm:px-6 2xl:px-8">{{ o.address }}</td>
+                <td class="px-4 py-4 sm:px-6 2xl:px-8">{{ o.contact_no }}</td>
+                <td class="px-4 py-4 sm:px-6 2xl:px-8">{{ o.email }}</td>
+
+                <td class="px-4 py-4 sm:px-6 2xl:px-8">{{ o.quantity }}</td>
+                <td class="px-4 py-4 sm:px-6 2xl:px-8">
+                  {{ o.created_at|date:"M d, Y" }}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    {% else %}
+    <div class="text-center py-12">
+      <svg
+        class="mx-auto w-16 h-16 2xl:w-20 2xl:h-20 text-gray-400 dark:text-gray-500 mb-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+        ></path>
+      </svg>
+      <h3
+        class="text-lg 2xl:text-xl font-medium text-gray-900 dark:text-white mb-2"
+      >
+        No orders found
+      </h3>
+      <p class="text-gray-500 dark:text-gray-400 mb-6 text-sm 2xl:text-base">
+        You haven't placed any orders yet.
+      </p>
+      <a
+        href="{% url 'productpage' %}"
+        class="inline-block bg-blue-600 text-white py-2 px-4 2xl:py-3 2xl:px-6 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition duration-150 text-sm 2xl:text-base"
+        aria-label="Continue shopping"
+      >
+        Start Shopping
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock main_section %}
