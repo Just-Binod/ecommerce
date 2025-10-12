@@ -138,3 +138,472 @@
     </span>
   </button>
 </div>
+
+{% comment %} {% load static %}
+
+<div
+  id="default-carousel"
+  class="relative w-full max-w-4xl mx-auto my-8"
+  style="z-index: 10"
+>
+  <!-- Carousel wrapper -->
+  <div
+    class="relative h-64 sm:h-80 md:h-96 overflow-hidden rounded-xl bg-gray-200"
+  >
+    <!-- Item 1 -->
+    <div class="carousel-item hidden duration-700 ease-in-out relative">
+      <img
+        src="https://via.placeholder.com/800x400?text=Slide+1"
+        class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+        alt="Slide 1"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4"
+      >
+        <h3 class="text-lg font-semibold">Slide 1</h3>
+        <p class="text-sm">A beautiful scene to explore.</p>
+      </div>
+    </div>
+    <!-- Item 2 -->
+    <div class="carousel-item hidden duration-700 ease-in-out relative">
+      <img
+        src="https://via.placeholder.com/800x400?text=Slide+2"
+        class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+        alt="Slide 2"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4"
+      >
+        <h3 class="text-lg font-semibold">Slide 2</h3>
+        <p class="text-sm">Discover new horizons.</p>
+      </div>
+    </div>
+    <!-- Item 3 -->
+    <div class="carousel-item hidden duration-700 ease-in-out relative">
+      <img
+        src="https://via.placeholder.com/800x400?text=Slide+3"
+        class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+        alt="Slide 3"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4"
+      >
+        <h3 class="text-lg font-semibold">Slide 3</h3>
+        <p class="text-sm">Embrace the adventure.</p>
+      </div>
+    </div>
+    <!-- Item 4 -->
+    <div class="carousel-item hidden duration-700 ease-in-out relative">
+      <img
+        src="https://via.placeholder.com/800x400?text=Slide+4"
+        class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+        alt="Slide 4"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4"
+      >
+        <h3 class="text-lg font-semibold">Slide 4</h3>
+        <p class="text-sm">Journey through beauty.</p>
+      </div>
+    </div>
+    <!-- Item 5 -->
+    <div class="carousel-item hidden duration-700 ease-in-out relative">
+      <img
+        src="https://via.placeholder.com/800x400?text=Slide+5"
+        class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+        alt="Slide 5"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4"
+      >
+        <h3 class="text-lg font-semibold">Slide 5</h3>
+        <p class="text-sm">Experience the magic.</p>
+      </div>
+    </div>
+  </div>
+  <!-- Slider indicators -->
+  <div class="absolute z-10 flex -translate-x-1/2 bottom-4 left-1/2 space-x-3">
+    <button
+      type="button"
+      class="w-3 h-3 rounded-full bg-gray-300 hover:bg-white transition-all duration-300"
+      aria-current="true"
+      aria-label="Slide 1"
+      data-carousel-slide-to="0"
+    ></button>
+    <button
+      type="button"
+      class="w-3 h-3 rounded-full bg-gray-300 hover:bg-white transition-all duration-300"
+      aria-current="false"
+      aria-label="Slide 2"
+      data-carousel-slide-to="1"
+    ></button>
+    <button
+      type="button"
+      class="w-3 h-3 rounded-full bg-gray-300 hover:bg-white transition-all duration-300"
+      aria-current="false"
+      aria-label="Slide 3"
+      data-carousel-slide-to="2"
+    ></button>
+    <button
+      type="button"
+      class="w-3 h-3 rounded-full bg-gray-300 hover:bg-white transition-all duration-300"
+      aria-current="false"
+      aria-label="Slide 4"
+      data-carousel-slide-to="3"
+    ></button>
+    <button
+      type="button"
+      class="w-3 h-3 rounded-full bg-gray-300 hover:bg-white transition-all duration-300"
+      aria-current="false"
+      aria-label="Slide 5"
+      data-carousel-slide-to="4"
+    ></button>
+  </div>
+  <!-- Slider controls -->
+  <button
+    type="button"
+    class="absolute top-1/2 left-0 z-10 flex items-center justify-center w-12 h-12 -translate-y-1/2 bg-gray-900 bg-opacity-70 hover:bg-opacity-90 transition-all duration-300 rounded-r-lg"
+    data-carousel-prev
+  >
+    <svg
+      class="w-6 h-6 text-white"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 6 10"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M5 1 1 5l4 4"
+      />
+    </svg>
+    <span class="sr-only">Previous</span>
+  </button>
+  <button
+    type="button"
+    class="absolute top-1/2 right-0 z-10 flex items-center justify-center w-12 h-12 -translate-y-1/2 bg-gray-900 bg-opacity-70 hover:bg-opacity-90 transition-all duration-300 rounded-l-lg"
+    data-carousel-next
+  >
+    <svg
+      class="w-6 h-6 text-white"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 6 10"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="m1 9 4-4-4-4"
+      />
+    </svg>
+    <span class="sr-only">Next</span>
+  </button>
+</div>
+
+<!-- Standard CSS -->
+<style>
+  #default-carousel {
+    position: relative;
+    z-index: 10; /* Ensure carousel stays below tabs/navigation */
+  }
+  .carousel-item {
+    transition: opacity 0.7s ease-in-out;
+  }
+  .carousel-item.active {
+    display: block;
+    opacity: 1;
+  }
+  .carousel-item.hidden {
+    display: none;
+    opacity: 0;
+  }
+  [data-carousel-slide-to][aria-current="true"] {
+    background-color: white;
+    transform: scale(1.2); /* Highlight active indicator */
+  }
+  [data-carousel-slide-to] {
+    transition: all 0.3s ease;
+  }
+  [data-carousel-prev],
+  [data-carousel-next] {
+    cursor: pointer;
+  }
+</style>
+
+<!-- Vanilla JavaScript for Carousel -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const carousel = document.getElementById("default-carousel");
+    const items = carousel.querySelectorAll(".carousel-item");
+    const indicators = carousel.querySelectorAll("[data-carousel-slide-to]");
+    const prevButton = carousel.querySelector("[data-carousel-prev]");
+    const nextButton = carousel.querySelector("[data-carousel-next]");
+    let currentIndex = 0;
+
+    function showSlide(index) {
+      items.forEach((item, i) => {
+        item.classList.toggle("active", i === index);
+        item.classList.toggle("hidden", i !== index);
+      });
+      indicators.forEach((indicator, i) => {
+        indicator.setAttribute("aria-current", i === index ? "true" : "false");
+      });
+    }
+
+    prevButton.addEventListener("click", () => {
+      currentIndex = (currentIndex - 1 + items.length) % items.length;
+      showSlide(currentIndex);
+    });
+
+    nextButton.addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % items.length;
+      showSlide(currentIndex);
+    });
+
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener("click", () => {
+        currentIndex = index;
+        showSlide(currentIndex);
+      });
+    });
+
+    // Show the first slide initially
+    showSlide(currentIndex);
+  });
+</script>
+{% endcomment %} {% comment %} {% load static %}
+
+<div
+  id="default-carousel"
+  class="relative w-full max-w-4xl mx-auto my-8"
+  data-carousel="slide"
+>
+  <!-- Carousel wrapper -->
+  <div
+    class="relative h-64 sm:h-80 md:h-96 overflow-hidden rounded-xl shadow-lg"
+  >
+    <!-- Item 1 -->
+    <div class="hidden duration-700 ease-in-out relative" data-carousel-item>
+      <img
+        src="{% static 'image/img1.avif' %}"
+        class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+        alt="Slide 1"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4"
+      >
+        <h3 class="text-lg font-semibold">Slide 1</h3>
+        <p class="text-sm">A beautiful scene to explore.</p>
+      </div>
+    </div>
+    <!-- Item 2 -->
+    <div class="hidden duration-700 ease-in-out relative" data-carousel-item>
+      <img
+        src="{% static 'image/img2.avif' %}"
+        class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+        alt="Slide 2"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4"
+      >
+        <h3 class="text-lg font-semibold">Slide 2</h3>
+        <p class="text-sm">Discover new horizons.</p>
+      </div>
+    </div>
+    <!-- Item 3 -->
+    <div class="hidden duration-700 ease-in-out relative" data-carousel-item>
+      <img
+        src="{% static 'image/img3.avif' %}"
+        class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+        alt="Slide 3"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4"
+      >
+        <h3 class="text-lg font-semibold">Slide 3</h3>
+        <p class="text-sm">Embrace the adventure.</p>
+      </div>
+    </div>
+    <!-- Item 4 -->
+    <div class="hidden duration-700 ease-in-out relative" data-carousel-item>
+      <img
+        src="{% static 'image/img4.avif' %}"
+        class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+        alt="Slide 4"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4"
+      >
+        <h3 class="text-lg font-semibold">Slide 4</h3>
+        <p class="text-sm">Journey through beauty.</p>
+      </div>
+    </div>
+    <!-- Item 5 -->
+    <div class="hidden duration-700 ease-in-out relative" data-carousel-item>
+      <img
+        src="{% static 'image/img5.avif' %}"
+        class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+        alt="Slide 5"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4"
+      >
+        <h3 class="text-lg font-semibold">Slide 5</h3>
+        <p class="text-sm">Experience the magic.</p>
+      </div>
+    </div>
+  </div>
+  <!-- Slider indicators -->
+  <div class="absolute z-10 flex -translate-x-1/2 bottom-4 left-1/2 space-x-3">
+    <button
+      type="button"
+      class="w-3 h-3 rounded-full bg-gray-300 hover:bg-white transition-all duration-300"
+      aria-current="true"
+      aria-label="Slide 1"
+      data-carousel-slide-to="0"
+    ></button>
+    <button
+      type="button"
+      class="w-3 h-3 rounded-full bg-gray-300 hover:bg-white transition-all duration-300"
+      aria-current="false"
+      aria-label="Slide 2"
+      data-carousel-slide-to="1"
+    ></button>
+    <button
+      type="button"
+      class="w-3 h-3 rounded-full bg-gray-300 hover:bg-white transition-all duration-300"
+      aria-current="false"
+      aria-label="Slide 3"
+      data-carousel-slide-to="2"
+    ></button>
+    <button
+      type="button"
+      class="w-3 h-3 rounded-full bg-gray-300 hover:bg-white transition-all duration-300"
+      aria-current="false"
+      aria-label="Slide 4"
+      data-carousel-slide-to="3"
+    ></button>
+    <button
+      type="button"
+      class="w-3 h-3 rounded-full bg-gray-300 hover:bg-white transition-all duration-300"
+      aria-current="false"
+      aria-label="Slide 5"
+      data-carousel-slide-to="4"
+    ></button>
+  </div>
+  <!-- Slider controls -->
+  <button
+    type="button"
+    class="absolute top-1/2 left-0 z-10 flex items-center justify-center w-12 h-12 -translate-y-1/2 bg-gradient-to-r from-gray-900/70 to-transparent hover:from-gray-900/90 transition-all duration-300 rounded-r-lg"
+    data-carousel-prev
+  >
+    <svg
+      class="w-6 h-6 text-white"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 6 10"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M5 1 1 5l4 4"
+      />
+    </svg>
+    <span class="sr-only">Previous</span>
+  </button>
+  <button
+    type="button"
+    class="absolute top-1/2 right-0 z-10 flex items-center justify-center w-12 h-12 -translate-y-1/2 bg-gradient-to-l from-gray-900/70 to-transparent hover:from-gray-900/90 transition-all duration-300 rounded-l-lg"
+    data-carousel-next
+  >
+    <svg
+      class="w-6 h-6 text-white"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 6 10"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="m1 9 4-4-4-4"
+      />
+    </svg>
+    <span class="sr-only">Next</span>
+  </button>
+</div>
+
+<!-- CSS for Styling -->
+<style>
+  .carousel-item {
+    transition: opacity 0.7s ease-in-out;
+  }
+  .carousel-item.active {
+    display: block;
+    opacity: 1;
+  }
+  .carousel-item.hidden {
+    display: none;
+    opacity: 0;
+  }
+  [data-carousel-slide-to][aria-current="true"] {
+    background-color: white;
+  }
+</style>
+
+<!-- Flowbite JavaScript (if using Flowbite) -->
+<script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
+
+<!-- Fallback Vanilla JavaScript (if Flowbite is not working) -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const carousel = document.getElementById("default-carousel");
+    const items = carousel.querySelectorAll("[data-carousel-item]");
+    const indicators = carousel.querySelectorAll("[data-carousel-slide-to]");
+    const prevButton = carousel.querySelector("[data-carousel-prev]");
+    const nextButton = carousel.querySelector("[data-carousel-next]");
+    let currentIndex = 0;
+
+    function showSlide(index) {
+      items.forEach((item, i) => {
+        item.classList.toggle("active", i === index);
+        item.classList.toggle("hidden", i !== index);
+      });
+      indicators.forEach((indicator, i) => {
+        indicator.setAttribute("aria-current", i === index ? "true" : "false");
+      });
+    }
+
+    prevButton.addEventListener("click", () => {
+      currentIndex = (currentIndex - 1 + items.length) % items.length;
+      showSlide(currentIndex);
+    });
+
+    nextButton.addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % items.length;
+      showSlide(currentIndex);
+    });
+
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener("click", () => {
+        currentIndex = index;
+        showSlide(currentIndex);
+      });
+    });
+
+    // Show the first slide initially
+    showSlide(currentIndex);
+  });
+</script>
+{% endcomment %}

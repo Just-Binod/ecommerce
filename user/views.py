@@ -775,3 +775,22 @@ def esewa_verify(request,order_id,cart_id):
             messages.add_message(request,messages.ERROR,'Your payment has been FAILED ! ')
             return redirect('/myorder')
   
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
+@login_required
+def user_profile(request):
+    user = request.user
+
+    if request.method == "POST":
+        email = request.POST.get("email")
+        if email:
+            user.email = email
+            user.save()
+            messages.success(request, "Profile updated successfully!")
+            return redirect("profile")
+
+    return render(request, "user/profile.html", {"user": user})
+
