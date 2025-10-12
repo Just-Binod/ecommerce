@@ -7,6 +7,8 @@ from .filters import *
 from django.contrib.auth import authenticate, login as auth_login, logout 
 from user.forms import *
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from django.views import View
 
 # from adminpage.views import adminhome
 # Create your views here.
@@ -60,9 +62,21 @@ def logoutuser(request):
 
 
 def homepage(request):
+    # user=request.user.id
+    user= request.user.id if request.user.is_authenticated else None
     product=Product.objects.all().order_by('-id')[:4]
-    cart_items = Cart.objects.filter(user=request.user).select_related('product')
-    cart_count = cart_items.count()
+
+    # cart_items = Cart.objects.filter(user=request.user).select_related('product')
+    # cart_count = cart_items.count()
+     # Only get cart items if user is authenticated
+    if request.user.is_authenticated:
+        cart_items = Cart.objects.filter(user=request.user).select_related('product')
+        cart_count = cart_items.count()
+    else:
+        cart_items = []
+        cart_count = 0
+
+
     data={
         'product':product,
          'items': cart_items,
@@ -496,12 +510,16 @@ def orderitem(request, product_id, cart_id):
                 messages.success(request, 'Your order has been placed successfully! Be ready with cash on delivery')
                 return redirect('/cartlist')
             elif order.payment_method == "Esewa":
-                cart.delete()
-                messages.success(request, 'Your order has been placed successfully! Proceed to pay with Esewa')
+                # 
+                return redirect(reverse('esewaform') + f'?o_id={order.id}&c_id={cart.id}')
+                # return redirect(reverse('esewaform/') + '?o_id=' + str(order.id) + '&c_id=' + str(cart.id))
+                # cart.delete()
+                # messages.success(request, 'Your order has been placed successfully! Proceed to pay with Esewa')
                 return redirect('/cartlist')
             elif order.payment_method == "khalthi":
-                cart.delete()
-                messages.success(request, 'Your order has been placed successfully! Proceed to pay with khalthi')
+                pass
+                # cart.delete()
+                # messages.success(request, 'Your order has been placed successfully! Proceed to pay with khalthi')
                 return redirect('/cartlist')
             else:
                 messages.error(request, 'Invalid payment option!')
@@ -526,3 +544,234 @@ def orderlist(request):
         'orders':orders
     }   
     return render(request,'user/myorder.html',context)
+
+
+
+# eswa integration
+
+
+
+################
+# import hmac
+# import hashlib
+# import uuid
+# import base64
+# class EsewaView(View):
+#     def get(self, request, *args, **kwargs):
+#         o_id = request.GET.get('o_id')
+#         c_id = request.GET.get('c_id')
+#         cart=Cart.objects.get(id=c_id)
+#         order=Order.objects.get(id=o_id)
+
+#         uuid_val=uuid.uuid4()
+
+#         def genSha256(key,message):
+#             key=key.encode('utf-8')
+#             message=message.encode('utf-8')
+#             hmac_sga256=hmac.new(key,message,hashlib.sha256)
+#             digest=hmac_sga256.digest()
+#             signature=base64.b64encode(digest).decode('utf-8')
+#             return signature
+#         # secret_key=settings.ESEWA_SECRET_KEY
+#         secret_key='8gBm/:&EnhH.1/q'
+#         data_to_sign=f"total_amount = {order.total_price},transaction_uuid={uuid_val},product_code=EPAYTEST"
+#         result=genSha256(secret_key,data_to_sign)
+
+#         data={
+#             'amount':order.product.product_price,
+#             'total_amount':order.total_price,
+#             'product_code':'EPAYTEST',
+#             'transaction_uuid':uuid_val,
+#             'signature':result,
+#         }
+#         context={
+#             'data':data,       
+#             'order':order,
+#             'cart':cart,
+
+#         }
+#         return render(request,'user/esewa_payment.html',context)
+         
+           
+###
+# import hmac
+# import hashlib
+# import uuid
+# import base64
+# def generate_esewa_signature(secret_key, total_amount, transaction_uuid, product_code):
+#     data_to_sign = f"total_amount={total_amount},transaction_uuid={transaction_uuid},product_code={product_code}"
+#     signature = hmac.new(
+#         secret_key.encode("utf-8"),
+#         data_to_sign.encode("utf-8"),
+#         hashlib.sha256
+#     ).digest()
+#     return base64.b64encode(signature).decode("utf-8")
+
+# #
+# class EsewaView(View):
+#     def get(self, request, *args, **kwargs):
+#         o_id = request.GET.get('o_id')
+#         c_id = request.GET.get('c_id')
+#         cart = Cart.objects.get(id=c_id)
+#         order = Order.objects.get(id=o_id)
+#         uuid_val = str(uuid.uuid4())
+
+#         secret_key = '8gBm/:&EnhH.1/q'  # sandbox key
+#         product_code = 'EPAYTEST'
+
+#         # Generate signature
+#         signature = generate_esewa_signature(
+#             secret_key,
+#             total_amount=order.total_price,
+#             transaction_uuid=uuid_val,
+#             product_code=product_code
+#         )
+
+#         data = {
+#             'amount': order.product.product_price,
+#             'tax_amount': 0,
+#             'total_amount': order.total_price,
+#             'transaction_uuid': uuid_val,
+#             'product_code': product_code,
+#             'product_service_charge': 0,
+#             'product_delivery_charge': 0,
+#             'success_url': 'https://developer.esewa.com.np/success',
+#             'failure_url': 'https://developer.esewa.com.np/failure',
+#             'signed_field_names': 'total_amount,transaction_uuid,product_code',
+#             'signature': signature,
+#         }
+
+#         return render(request, 'user/esewa_payment.html', {'data': data})
+
+
+###
+
+
+
+
+###
+import hmac, hashlib, base64, uuid
+from django.views import View
+from django.shortcuts import render
+from product.models import Cart, Order
+
+class EsewaView(View):
+    def get(self, request, *args, **kwargs):
+        o_id = request.GET.get('o_id')
+        c_id = request.GET.get('c_id')
+
+        cart = Cart.objects.get(id=c_id)
+        order = Order.objects.get(id=o_id)
+
+        transaction_uuid = str(uuid.uuid4())
+        product_code = "EPAYTEST"
+        secret_key = "8gBm/:&EnhH.1/q"
+
+        # === Correct total ===
+        amount = order.total_price
+        tax_amount = 0
+        product_service_charge = 0
+        product_delivery_charge = 0
+        total_amount = amount + tax_amount + product_service_charge + product_delivery_charge
+
+        # === Signature ===
+        data_to_sign = f"total_amount={total_amount},transaction_uuid={transaction_uuid},product_code={product_code}"
+        signature = hmac.new(secret_key.encode('utf-8'),
+                             data_to_sign.encode('utf-8'),
+                             hashlib.sha256).digest()
+        signature_base64 = base64.b64encode(signature).decode('utf-8')
+
+        data = {
+            "amount": amount,
+            "tax_amount": tax_amount,
+            "product_service_charge": product_service_charge,
+            "product_delivery_charge": product_delivery_charge,
+            "total_amount": total_amount,
+            "transaction_uuid": transaction_uuid,
+            "product_code": product_code,
+           "success_url": f"http://localhost:8000/esewaverify/{order.id}/{cart.id}/",
+            "failure_url": f"http://localhost:8000/esewaverify/{order.id}/{cart.id}/",
+            "signed_field_names": "total_amount,transaction_uuid,product_code",
+            "signature": signature_base64,
+            "order_id": order.id,
+            "cart_id": cart.id,
+        }
+
+        return render(request, "user/esewa_payment.html", {"data": data})
+
+
+##
+# import hmac
+# import hashlib
+# import base64
+# import uuid
+# from django.views import View
+# from django.shortcuts import render
+# from product.models import Cart, Order
+
+# class EsewaView(View):
+#     def get(self, request, *args, **kwargs):
+#         o_id = request.GET.get('o_id')
+#         c_id = request.GET.get('c_id')
+
+#         cart = Cart.objects.get(id=c_id)
+#         order = Order.objects.get(id=o_id)
+
+#         # Generate a unique transaction UUID
+#         transaction_uuid = str(uuid.uuid4())
+
+#         # Required sandbox credentials
+#         product_code = "EPAYTEST"
+#         secret_key = "8gBm/:&EnhH.1/q"  # eSewa test secret key
+
+#         # Important: the string to sign must have no spaces, exact order
+#         data_to_sign = f"total_amount={order.total_price},transaction_uuid={transaction_uuid},product_code={product_code}"
+
+#         # Generate base64 encoded signature
+#         signature = hmac.new(
+#             key=secret_key.encode('utf-8'),
+#             msg=data_to_sign.encode('utf-8'),
+#             digestmod=hashlib.sha256
+#         ).digest()
+#         signature_base64 = base64.b64encode(signature).decode('utf-8')
+
+#         # Pass all required fields to template
+#         data = {
+#             "amount": order.product.product_price,
+#             "tax_amount": 0,
+#             "total_amount": order.total_price,
+#             "transaction_uuid": transaction_uuid,
+#             "product_code": product_code,
+#             "product_service_charge": 0,
+#             "product_delivery_charge": 0,
+#             "success_url": "https://developer.esewa.com.np/success",
+#             "failure_url": "https://developer.esewa.com.np/failure",
+#             "signed_field_names": "total_amount,transaction_uuid,product_code",
+#             "signature": signature_base64,
+#         }
+
+#         return render(request, "user/esewa_payment.html", {"data": data})
+
+###
+
+import json
+@login_required
+def esewa_verify(request,order_id,cart_id):
+    if request.method=='GET':
+        data=request.GET.get('data')
+        decoded_data=base64.b64decode(data).decode('utf-8')
+        map_data=json.loads(decoded_data)
+        order=Order.objects.get(id=order_id)
+        cart=Cart.objects.get(id=cart_id)
+        if map_data.get('status')=='COMPLETE':
+            order.payment_status='Completed'
+            order.save()
+            cart.delete()
+            messages.add_message(request,messages.SUCCESS,'Your payment has been completed successfully ! ')
+            return redirect('/myorder')
+        else:
+            # order.payment_status=False
+            # order.save()
+            messages.add_message(request,messages.ERROR,'Your payment has been FAILED ! ')
+            return redirect('/myorder')
+  

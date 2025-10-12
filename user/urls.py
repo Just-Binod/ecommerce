@@ -1,5 +1,6 @@
 from django.urls import path
 from user import views
+from user.views import EsewaView
 
 urlpatterns = [
 
@@ -20,6 +21,11 @@ urlpatterns = [
     # path('checkout/', views.checkout, name='checkout'),
     path('order-confirmation/', views.order_confirmation, name='order_confirmation'),
     #
+    # for esewa form
+    path('esewaform/', EsewaView.as_view(), name='esewaform'),
+     path('esewaverify/<int:order_id>/<int:cart_id>/',views.esewa_verify, name='esewaverify'),
+
+    
 
   
     # path('addcategory/', views.addcategory, name='addcategory'),
