@@ -80,3 +80,67 @@ def addcategory(request):
 
 
 
+@login_required
+@admin_only
+def updateproduct(request,product_id):
+    instance=Product.objects.get(id=product_id)
+    if request.method== 'POST':
+        form=ProductForm(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request,messages.SUCCESS,'Product has been updated sucessfully ! ')
+            return redirect('/admins/productlist')
+        else:
+            messages.add_message(request,messages.ERROR,'OOPs, Error occured while updating product ! ')
+            return render(request,'admins/updateproduct.html',{'form':form})
+    form=ProductForm(instance=instance)
+    return render(request,'admins/updateproduct.html',{'form':form})
+
+
+
+@login_required
+@admin_only
+def updatecategory(request,category_id):
+    instance=Category.objects.get(id=category_id)
+    if request.method== 'POST':
+        form=CategoryForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request,messages.SUCCESS,'Category has been updated sucessfully ! ')
+            return redirect('/admins/categorylist')
+        else:
+            messages.add_message(request,messages.ERROR,'OOPs, Error occured while updating Category ! ')
+            return render(request,'admins/updatecategory.html',{'form':form})
+    form=CategoryForm(instance=instance)
+    return render(request,'admins/updatecategory.html',{'form':form})
+
+
+
+
+# @login_required
+# @admin_only
+# def updateproduct(request,product_id):
+#     instance=Product.objects.get(id=product_id)
+#     forms={
+#         'form':ProductForm(instance=instance)
+#     }
+#     return render(request,'admins/updateproduct.html',forms)
+
+
+
+@login_required
+@admin_only
+def deleteproduct(request,product_id):
+    product=Product.objects.get(id=product_id)
+    product.delete()
+    messages.add_message(request,messages.SUCCESS,'Product has been deleted sucessfully ! ')
+    return redirect('/admins/productlist')
+
+
+@login_required
+@admin_only
+def deletecategory(request,category_id):
+    category=Category.objects.get(id=category_id)
+    category.delete()
+    messages.add_message(request,messages.SUCCESS,'Category has been deleted sucessfully ! ')
+    return redirect('/admins/categorylist')
