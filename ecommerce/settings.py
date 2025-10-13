@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIRS = BASE_DIR / 'templates'
 
 STATIC_DIR = BASE_DIR / 'static'
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # ← ADD THIS LINE
 
 # ↓↓↓ ADD THESE LINES FOR MEDIA FILES ↓↓↓
 MEDIA_URL = '/media/'

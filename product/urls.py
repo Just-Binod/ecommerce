@@ -23,6 +23,8 @@ from product import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('product/', views.product, name='product'),
+    path('about/', views.about, name='about'),
+    path('how/', views.how, name='how'),
 
 
 

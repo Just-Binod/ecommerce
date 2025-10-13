@@ -17,3 +17,11 @@ def product(request):
     product=Product.objects.all()
     context={'product':product}
     return render(request, 'ecommerce/product.html',context)
+
+
+def about(request):
+    return render(request, 'ecommerce/about.html')
+
+
+def how(request):
+    return render(request, 'ecommerce/how.html')
