@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>New Order Notification</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      h2 {
+        color: #333;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        margin-bottom: 10px;
+      }
+      .footer {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #666;
+      }
+      .highlight {
+        background-color: #f0f8ff;
+        padding: 10px;
+        border-left: 4px solid #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>New Order #{{ order.id }}</h2>
+      <p>A new order has been placed:</p>
+      <div class="highlight">
+        <strong>Customer Email: {{ order.email }}</strong>
+      </div>
+      <ul>
+        <li>
+          <strong>Customer:</strong> {{ order.user.username }} ({{ order.email
+          }})
+        </li>
+        <li><strong>Product:</strong> {{ order.product.product_name }}</li>
+        <li><strong>Quantity:</strong> {{ order.quantity }}</li>
+        <li><strong>Total Price:</strong> NPR {{ order.total_price }}</li>
+        <li><strong>Payment Method:</strong> {{ order.payment_method }}</li>
+        <li><strong>Address:</strong> {{ order.address }}</li>
+        <li><strong>Contact:</strong> {{ order.contact_no }}</li>
+        <li><strong>Status:</strong> {{ order.payment_status }}</li>
+        <li>
+          <strong>Order Date:</strong> {{ order.created_at|date:"Y-m-d H:i" }}
+        </li>
+      </ul>
+      <p class="footer">Please process this order in the admin panel.</p>
+      <hr />
+      <small>
+        Order ID: {{ order.id }} | Product ID: {{ order.product.id }} | User ID:
+        {{ order.user.id }}
+      </small>
+    </div>
+  </body>
+</html>

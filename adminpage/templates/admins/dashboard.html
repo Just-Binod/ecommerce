@@ -1,287 +1,36 @@
-{% extends "admins/index.html" %} {% block admin_content %}
-
-<div
-  class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700"
->
-  <div class="grid grid-cols-3 gap-4 mb-4">
+{% extends "admins/index.html" %} {% load static %} {% block admin_content %}
+<div class="p-2 sm:ml-64">
+  <div class="max-w-7xl mx-auto">
+    <!-- Welcome Card -->
     <div
-      class="flex items-center justify-center h-24 rounded-sm bg-gray-50 dark:bg-gray-800"
+      class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-4 border border-gray-200 dark:border-gray-700"
     >
-      <p class="text-2xl text-gray-400 dark:text-gray-500">
-        <svg
-          class="w-3.5 h-3.5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 18 18"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 1v16M1 9h16"
-          />
-        </svg>
-      </p>
-    </div>
-    <div
-      class="flex items-center justify-center h-24 rounded-sm bg-gray-50 dark:bg-gray-800"
-    >
-      <p class="text-2xl text-gray-400 dark:text-gray-500">
-        <svg
-          class="w-3.5 h-3.5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 18 18"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 1v16M1 9h16"
-          />
-        </svg>
-      </p>
-    </div>
-    <div
-      class="flex items-center justify-center h-24 rounded-sm bg-gray-50 dark:bg-gray-800"
-    >
-      <p class="text-2xl text-gray-400 dark:text-gray-500">
-        <svg
-          class="w-3.5 h-3.5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 18 18"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 1v16M1 9h16"
-          />
-        </svg>
-      </p>
-    </div>
-  </div>
-  <div
-    class="flex items-center justify-center h-48 mb-4 rounded-sm bg-gray-50 dark:bg-gray-800"
-  >
-    <p class="text-2xl text-gray-400 dark:text-gray-500">
-      <svg
-        class="w-3.5 h-3.5"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 18 18"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M9 1v16M1 9h16"
-        />
-      </svg>
-    </p>
-  </div>
-  <div class="grid grid-cols-2 gap-4 mb-4">
-    <div
-      class="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800"
-    >
-      <p class="text-2xl text-gray-400 dark:text-gray-500">
-        <svg
-          class="w-3.5 h-3.5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 18 18"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 1v16M1 9h16"
-          />
-        </svg>
-      </p>
-    </div>
-    <div
-      class="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800"
-    >
-      <p class="text-2xl text-gray-400 dark:text-gray-500">
-        <svg
-          class="w-3.5 h-3.5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 18 18"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 1v16M1 9h16"
-          />
-        </svg>
-      </p>
-    </div>
-    <div
-      class="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800"
-    >
-      <p class="text-2xl text-gray-400 dark:text-gray-500">
-        <svg
-          class="w-3.5 h-3.5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 18 18"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 1v16M1 9h16"
-          />
-        </svg>
-      </p>
-    </div>
-    <div
-      class="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800"
-    >
-      <p class="text-2xl text-gray-400 dark:text-gray-500">
-        <svg
-          class="w-3.5 h-3.5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 18 18"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 1v16M1 9h16"
-          />
-        </svg>
-      </p>
-    </div>
-  </div>
-  <div
-    class="flex items-center justify-center h-48 mb-4 rounded-sm bg-gray-50 dark:bg-gray-800"
-  >
-    <p class="text-2xl text-gray-400 dark:text-gray-500">
-      <svg
-        class="w-3.5 h-3.5"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 18 18"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M9 1v16M1 9h16"
-        />
-      </svg>
-    </p>
-  </div>
-  <div class="grid grid-cols-2 gap-4">
-    <div
-      class="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800"
-    >
-      <p class="text-2xl text-gray-400 dark:text-gray-500">
-        <svg
-          class="w-3.5 h-3.5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 18 18"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 1v16M1 9h16"
-          />
-        </svg>
-      </p>
-    </div>
-    <div
-      class="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800"
-    >
-      <p class="text-2xl text-gray-400 dark:text-gray-500">
-        <svg
-          class="w-3.5 h-3.5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 18 18"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 1v16M1 9h16"
-          />
-        </svg>
-      </p>
-    </div>
-    <div
-      class="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800"
-    >
-      <p class="text-2xl text-gray-400 dark:text-gray-500">
-        <svg
-          class="w-3.5 h-3.5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 18 18"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 1v16M1 9h16"
-          />
-        </svg>
-      </p>
-    </div>
-    <div
-      class="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800"
-    >
-      <p class="text-2xl text-gray-400 dark:text-gray-500">
-        <svg
-          class="w-3.5 h-3.5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 18 18"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 1v16M1 9h16"
-          />
-        </svg>
-      </p>
+      <div class="flex items-center space-x-3">
+        <div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-full">
+          <svg
+            class="w-6 h-6 text-blue-600 dark:text-blue-400"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-9h2v5H9V7zm0 6h2v2H9v-2z"
+            />
+          </svg>
+        </div>
+        <div>
+          <h1
+            class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white"
+          >
+            Welcome, {{ request.user.username|title }}!
+          </h1>
+          <p class="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base">
+            Manage your e-commerce platform with ease. Start by reviewing orders
+            or adding products.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
 {% endblock admin_content %}
