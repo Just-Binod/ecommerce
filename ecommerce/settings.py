@@ -26,8 +26,12 @@ LOGIN_URL = '/login'
 SECRET_KEY = "django-insecure-ytii)867^q+8d7^elw)vsv354^u$x67c=lxt3@q34^pq=2n&2("
 DEBUG = False  # turn off debug for production
 
-# 👇 your Render URL
-ALLOWED_HOSTS = ['dhirghayu.onrender.com', 'localhost', '127.0.0.1']
+# 👇 PythonAnywhere URL - replace 'dhirghayu' with your actual username
+ALLOWED_HOSTS = [
+    'dhirghayu.pythonanywhere.com', 
+    'localhost', 
+    '127.0.0.1'
+]
 
 # --------------------------------------------------------
 # Installed apps
@@ -114,7 +118,7 @@ USE_TZ = True
 # --------------------------------------------------------
 # Static files
 # --------------------------------------------------------
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 STATICFILES_DIRS = [STATIC_DIR]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
@@ -169,11 +173,6 @@ LOGGING = {
         },
     },
 }
-
-
-
-
-
 
 
 
