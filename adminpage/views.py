@@ -204,3 +204,75 @@ def confirm_payment(request):
             messages.error(request, f"Failed to confirm payments: {str(e)}")
         return redirect('confirm_payment')
     return render(request, 'admins/confirm_payment.html', {'cod_orders': cod_orders})
+
+
+
+
+# ######################################
+
+@login_required
+@admin_only
+def user_management(request):
+    # Get all users ordered by most recently joined first
+    users = User.objects.all().order_by('-date_joined')
+    
+    user_data = []
+    for user in users:
+        # Get or create UserProfile for each user
+        profile, created = UserProfile.objects.get_or_create(user=user)
+        
+        # Calculate user statistics
+        user_orders = Order.objects.filter(user=user)
+        orders_count = user_orders.count()
+        total_spent = sum(order.total_price for order in user_orders) if user_orders else 0
+        
+        user_data.append({
+            'user': user,
+            'profile': profile,
+            'orders_count': orders_count,
+            'total_spent': total_spent
+        })
+    
+    # Calculate statistics for the cards
+    total_users = users.count()
+    active_users = users.filter(is_active=True).count()
+    banned_users = UserProfile.objects.filter(is_banned=True).count()
+    total_orders = Order.objects.count()
+    
+    context = {
+        'user_data': user_data,
+        'total_users': total_users,
+        'active_users': active_users,
+        'banned_users': banned_users,
+        'total_orders': total_orders,
+    }
+    return render(request, 'admins/user_management.html', context)
+@login_required
+@admin_only
+def ban_user(request, user_id):
+    if request.method == 'POST':
+        user = get_object_or_404(User, id=user_id)
+        profile, created = UserProfile.objects.get_or_create(user=user)
+        
+        profile.is_banned = True
+        profile.ban_reason = request.POST.get('ban_reason', 'Violation of terms')
+        profile.save()
+        
+        messages.success(request, f'User {user.username} has been banned successfully!')
+        return redirect('user_management')
+
+@login_required
+@admin_only
+def unban_user(request, user_id):
+    if request.method == 'POST':
+        user = get_object_or_404(User, id=user_id)
+        profile, created = UserProfile.objects.get_or_create(user=user)
+        
+        profile.is_banned = False
+        profile.ban_reason = ''
+        profile.save()
+        
+        messages.success(request, f'User {user.username} has been unbanned successfully!')
+        return redirect('user_management')
+
+######################################################

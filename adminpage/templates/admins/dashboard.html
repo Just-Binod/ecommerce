@@ -1,36 +1,404 @@
-{% extends "admins/index.html" %} {% load static %} {% block admin_content %}
+{% extends "admins/index.html" %} {% load static %}
+<!----    -->
+
+{% block page_title %}Dashboard{% endblock %}
+
+<!----    -->
+{% block page_subtitle %}Welcome back, {{ request.user.username|title }}
+<!----    -->
+{% endblock %} {% block admin_content %}
 <div class="p-2 sm:ml-64">
   <div class="max-w-7xl mx-auto">
     <!-- Welcome Card -->
     <div
-      class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-4 border border-gray-200 dark:border-gray-700"
+      class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-xl p-8 mb-8 text-white"
     >
-      <div class="flex items-center space-x-3">
-        <div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-full">
-          <svg
-            class="w-6 h-6 text-blue-600 dark:text-blue-400"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-9h2v5H9V7zm0 6h2v2H9v-2z"
-            />
-          </svg>
+      <div class="flex flex-col md:flex-row items-center justify-between">
+        <div class="flex items-center space-x-6 mb-6 md:mb-0">
+          <div class="p-4 bg-white/20 rounded-2xl backdrop-blur-sm">
+            <i class="fas fa-chart-line text-3xl"></i>
+          </div>
+          <div>
+            <h1 class="text-3xl font-bold">
+              Welcome, {{ request.user.username|title }}! 👋
+            </h1>
+            <p class="text-blue-100 mt-2 text-lg">
+              Here's what's happening with your store today.
+            </p>
+          </div>
         </div>
-        <div>
-          <h1
-            class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white"
+        <div class="text-right">
+          <div class="text-blue-100 text-sm">Today is</div>
+          <div class="text-2xl font-semibold" id="current-date-full"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow duration-200"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Total Users
+            </p>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+              {{ total_users }}
+            </p>
+            <p class="text-xs text-green-600 dark:text-green-400 mt-1">
+              <i class="fas fa-arrow-up mr-1"></i>Active users
+            </p>
+          </div>
+          <div class="p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
+            <i
+              class="fas fa-users text-blue-600 dark:text-blue-400 text-2xl"
+            ></i>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow duration-200"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Total Orders
+            </p>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+              {{ total_orders }}
+            </p>
+            <p class="text-xs text-green-600 dark:text-green-400 mt-1">
+              <i class="fas fa-shopping-cart mr-1"></i>All time orders
+            </p>
+          </div>
+          <div class="p-3 bg-green-100 dark:bg-green-900 rounded-lg">
+            <i
+              class="fas fa-shopping-cart text-green-600 dark:text-green-400 text-2xl"
+            ></i>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow duration-200"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Pending Payments
+            </p>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+              {{ pending_payments }}
+            </p>
+            <p class="text-xs text-red-600 dark:text-red-400 mt-1">
+              <i class="fas fa-clock mr-1"></i>Need attention
+            </p>
+          </div>
+          <div class="p-3 bg-yellow-100 dark:bg-yellow-900 rounded-lg">
+            <i
+              class="fas fa-credit-card text-yellow-600 dark:text-yellow-400 text-2xl"
+            ></i>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow duration-200"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Total Revenue
+            </p>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+              NPR {{ total_revenue }}
+            </p>
+            <p class="text-xs text-green-600 dark:text-green-400 mt-1">
+              <i class="fas fa-dollar-sign mr-1"></i>Lifetime revenue
+            </p>
+          </div>
+          <div class="p-3 bg-purple-100 dark:bg-purple-900 rounded-lg">
+            <i
+              class="fas fa-dollar-sign text-purple-600 dark:text-purple-400 text-2xl"
+            ></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions & Recent Activity -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Quick Actions -->
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6"
+      >
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          Quick Actions
+        </h3>
+        <div class="grid grid-cols-2 gap-4">
+          <a
+            href="{% url 'addproduct' %}"
+            class="flex flex-col items-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors duration-200 group"
           >
-            Welcome, {{ request.user.username|title }}!
-          </h1>
-          <p class="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base">
-            Manage your e-commerce platform with ease. Start by reviewing orders
-            or adding products.
-          </p>
+            <div
+              class="w-12 h-12 bg-blue-100 dark:bg-blue-800 rounded-lg flex items-center justify-center mb-2 group-hover:bg-blue-200 dark:group-hover:bg-blue-700 transition-colors duration-200"
+            >
+              <i
+                class="fas fa-plus text-blue-600 dark:text-blue-400 text-xl"
+              ></i>
+            </div>
+            <span
+              class="text-sm font-medium text-gray-700 dark:text-gray-300 text-center"
+              >Add Product</span
+            >
+          </a>
+
+          <a
+            href="{% url 'addcategory' %}"
+            class="flex flex-col items-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors duration-200 group"
+          >
+            <div
+              class="w-12 h-12 bg-green-100 dark:bg-green-800 rounded-lg flex items-center justify-center mb-2 group-hover:bg-green-200 dark:group-hover:bg-green-700 transition-colors duration-200"
+            >
+              <i
+                class="fas fa-tag text-green-600 dark:text-green-400 text-xl"
+              ></i>
+            </div>
+            <span
+              class="text-sm font-medium text-gray-700 dark:text-gray-300 text-center"
+              >Add Category</span
+            >
+          </a>
+
+          <a
+            href="{% url 'confirm_payment' %}"
+            class="flex flex-col items-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-900/30 transition-colors duration-200 group"
+          >
+            <div
+              class="w-12 h-12 bg-yellow-100 dark:bg-yellow-800 rounded-lg flex items-center justify-center mb-2 group-hover:bg-yellow-200 dark:group-hover:bg-yellow-700 transition-colors duration-200"
+            >
+              <i
+                class="fas fa-credit-card text-yellow-600 dark:text-yellow-400 text-xl"
+              ></i>
+            </div>
+            <span
+              class="text-sm font-medium text-gray-700 dark:text-gray-300 text-center"
+              >Confirm Payments</span
+            >
+          </a>
+
+          <a
+            href="{% url 'user_management' %}"
+            class="flex flex-col items-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors duration-200 group"
+          >
+            <div
+              class="w-12 h-12 bg-purple-100 dark:bg-purple-800 rounded-lg flex items-center justify-center mb-2 group-hover:bg-purple-200 dark:group-hover:bg-purple-700 transition-colors duration-200"
+            >
+              <i
+                class="fas fa-users text-purple-600 dark:text-purple-400 text-xl"
+              ></i>
+            </div>
+            <span
+              class="text-sm font-medium text-gray-700 dark:text-gray-300 text-center"
+              >Manage Users</span
+            >
+          </a>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6"
+      >
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            Recent Activity
+          </h3>
+          <span class="text-xs text-gray-500 dark:text-gray-400"
+            >Last 7 days</span
+          >
+        </div>
+        <div class="space-y-4">
+          {% for activity in recent_activities %}
+          <div
+            class="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150"
+          >
+            <div
+              class="flex-shrink-0 w-8 h-8 {{ activity.color }} rounded-full flex items-center justify-center"
+            >
+              <i class="{{ activity.icon }} text-sm"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-900 dark:text-white">
+                {{ activity.title }}
+              </p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                {{ activity.description }}
+              </p>
+              <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                {{ activity.time }}
+              </p>
+            </div>
+          </div>
+          {% empty %}
+          <div class="flex items-start space-x-3 p-3 rounded-lg">
+            <div
+              class="flex-shrink-0 w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center"
+            >
+              <i class="fas fa-info-circle text-gray-400 text-sm"></i>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-900 dark:text-white">
+                No recent activity
+              </p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                Activity will appear here as it happens
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Orders & Top Products -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+      <!-- Recent Orders -->
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6"
+      >
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            Recent Orders
+          </h3>
+          <a
+            href="#"
+            class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+            >View all</a
+          >
+        </div>
+        <div class="space-y-3">
+          {% for order in recent_orders %}
+          <div
+            class="flex items-center justify-between p-3 rounded-lg border border-gray-100 dark:border-gray-600"
+          >
+            <div class="flex items-center space-x-3">
+              <div
+                class="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center"
+              >
+                <i
+                  class="fas fa-shopping-bag text-blue-600 dark:text-blue-400"
+                ></i>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-900 dark:text-white">
+                  Order #{{ order.id }}
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  {{ order.user.username }}
+                </p>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="text-sm font-semibold text-gray-900 dark:text-white">
+                NPR {{ order.total_price }}
+              </p>
+              <span
+                class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium {% if order.payment_status == 'Completed' %}bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 {% else %}bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300{% endif %}"
+              >
+                {{ order.payment_status }}
+              </span>
+            </div>
+          </div>
+          {% empty %}
+          <div class="text-center py-8">
+            <i
+              class="fas fa-shopping-cart text-gray-300 dark:text-gray-600 text-4xl mb-3"
+            ></i>
+            <p class="text-gray-500 dark:text-gray-400">No recent orders</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Top Products -->
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6"
+      >
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            Top Products
+          </h3>
+          <a
+            href="{% url 'productlist' %}"
+            class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+            >View all</a
+          >
+        </div>
+        <div class="space-y-3">
+          {% for product in top_products %}
+          <div
+            class="flex items-center justify-between p-3 rounded-lg border border-gray-100 dark:border-gray-600"
+          >
+            <div class="flex items-center space-x-3">
+              {% if product.image %}
+              <img
+                src="{{ product.image.url }}"
+                alt="{{ product.product_name }}"
+                class="w-10 h-10 rounded-lg object-cover"
+              />
+              {% else %}
+              <div
+                class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center"
+              >
+                <i class="fas fa-image text-gray-400"></i>
+              </div>
+              {% endif %}
+              <div>
+                <p class="text-sm font-medium text-gray-900 dark:text-white">
+                  {{ product.product_name }}
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  {{ product.category }}
+                </p>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="text-sm font-semibold text-gray-900 dark:text-white">
+                NPR {{ product.product_price }}
+              </p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                Stock: {{ product.quantity }}
+              </p>
+            </div>
+          </div>
+          {% empty %}
+          <div class="text-center py-8">
+            <i
+              class="fas fa-box-open text-gray-300 dark:text-gray-600 text-4xl mb-3"
+            ></i>
+            <p class="text-gray-500 dark:text-gray-400">
+              No products available
+            </p>
+          </div>
+          {% endfor %}
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  // Set current date
+  document.getElementById("current-date-full").textContent =
+    new Date().toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+</script>
 {% endblock admin_content %}

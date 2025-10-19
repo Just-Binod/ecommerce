@@ -1,0 +1,664 @@
+{% extends "admins/index.html" %} {% load static %} {% block page_title %}User
+Management{% endblock %} {% block page_subtitle %}Manage all users and their
+account status{% endblock %} {% block admin_content %}
+<div class="p-2 sm:ml-64">
+  <div class="max-w-7xl mx-auto">
+    <!-- Stats Cards -->
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 justify-items-center"
+    >
+      <div
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 w-full max-w-sm"
+      >
+        <div class="flex items-center">
+          <div
+            class="flex-shrink-0 p-3 bg-blue-100 dark:bg-blue-900 rounded-lg"
+          >
+            <i
+              class="fas fa-users text-blue-600 dark:text-blue-400 text-xl"
+            ></i>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Total Users
+            </p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white">
+              {{ total_users|default:0 }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 w-full max-w-sm"
+      >
+        <div class="flex items-center">
+          <div
+            class="flex-shrink-0 p-3 bg-green-100 dark:bg-green-900 rounded-lg"
+          >
+            <i
+              class="fas fa-user-check text-green-600 dark:text-green-400 text-xl"
+            ></i>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Active Users
+            </p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white">
+              {{ active_users|default:0 }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 w-full max-w-sm"
+      >
+        <div class="flex items-center">
+          <div class="flex-shrink-0 p-3 bg-red-100 dark:bg-red-900 rounded-lg">
+            <i
+              class="fas fa-user-slash text-red-600 dark:text-red-400 text-xl"
+            ></i>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Banned Users
+            </p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white">
+              {{ banned_users|default:0 }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 w-full max-w-sm"
+      >
+        <div class="flex items-center">
+          <div
+            class="flex-shrink-0 p-3 bg-purple-100 dark:bg-purple-900 rounded-lg"
+          >
+            <i
+              class="fas fa-shopping-cart text-purple-600 dark:text-purple-400 text-xl"
+            ></i>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Total Orders
+            </p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white">
+              {{ total_orders|default:0 }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Users Table -->
+    <div
+      class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+    >
+      <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white">
+            All Users
+          </h3>
+          <div class="relative">
+            <input
+              type="text"
+              placeholder="Search users..."
+              class="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                User
+              </th>
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Contact
+              </th>
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Activity
+              </th>
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Status
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Total Spent
+              </th>
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+
+          <!----->
+          <tbody
+            class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
+          >
+            {% for data in user_data %}
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 h-10 w-10">
+                    <div
+                      class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold"
+                    >
+                      {{ data.user.username|first|upper }}
+                    </div>
+                  </div>
+                  <div class="ml-4">
+                    <div
+                      class="text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      {{ data.user.username }}
+                    </div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                      {{ data.user.first_name }} {{ data.user.last_name }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900 dark:text-white">
+                  {{ data.user.email }}
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900 dark:text-white">
+                  {{ data.user.date_joined|date:"M d, Y" }}
+                </div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">
+                  {{ data.user.date_joined|timesince }} ago
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900 dark:text-white">
+                  {{ data.orders_count }}
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900 dark:text-white">
+                  Rs. {{ data.total_spent }}
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                {% if data.profile.is_banned %}
+                <span
+                  class="inline-flex px-2 py-1 text-xs font-semibold leading-5 text-red-800 bg-red-100 rounded-full dark:bg-red-800 dark:text-white-100"
+                >
+                  Banned
+                </span>
+                {% if data.profile.ban_reason %}
+                <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  Reason: {{ data.profile.ban_reason }}
+                </div>
+                {% endif %} {% else %}
+                <span
+                  class="inline-flex px-2 py-1 text-xs font-semibold leading-5 text-white-800 bg-green-100 rounded-full dark:bg-green-800 dark:text-green-100"
+                >
+                  Active
+                </span>
+                {% endif %}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                {% if data.profile.is_banned %}
+                <form
+                  method="post"
+                  action="{% url 'unban_user' data.user.id %}"
+                  class="inline"
+                >
+                  {% csrf_token %}
+                  <button
+                    type="submit"
+                    class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 mr-3"
+                  >
+                    Unban
+                  </button>
+                </form>
+                {% else %}
+                <button
+                  onclick="openBanModal({{ data.user.id }}, '{{ data.user.username }}')"
+                  class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 mr-3"
+                >
+                  Ban
+                </button>
+                {% endif %}
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td
+                colspan="7"
+                class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400"
+              >
+                No users found.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+          <!----->
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ban User Modal -->
+<div
+  id="banModal"
+  class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50"
+>
+  <div
+    class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800"
+  >
+    <div class="mt-3">
+      <div
+        class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900"
+      >
+        <i
+          class="fas fa-exclamation-triangle text-red-600 dark:text-red-400 text-xl"
+        ></i>
+      </div>
+      <div class="mt-3 text-center">
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white">
+          Ban User
+        </h3>
+        <div class="mt-2 px-7 py-3">
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            Are you sure you want to ban
+            <span
+              id="banUsername"
+              class="font-semibold text-gray-900 dark:text-white"
+            ></span
+            >?
+          </p>
+          <form id="banForm" method="post" class="mt-4">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" id="banUserId" />
+            <div class="mb-4">
+              <label
+                for="ban_reason"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 text-left mb-2"
+              >
+                Reason for ban:
+              </label>
+              <textarea
+                name="ban_reason"
+                id="ban_reason"
+                rows="3"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Enter reason for banning this user..."
+              ></textarea>
+            </div>
+            <div class="flex justify-end space-x-3 mt-6">
+              <button
+                type="button"
+                onclick="closeBanModal()"
+                class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 dark:bg-gray-600 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-500 transition-colors duration-200"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
+              >
+                Ban User
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ban Reason Modal -->
+<div
+  id="reasonModal"
+  class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50"
+>
+  <div
+    class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800"
+  >
+    <div class="mt-3">
+      <div
+        class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 dark:bg-yellow-900"
+      >
+        <i
+          class="fas fa-info-circle text-yellow-600 dark:text-yellow-400 text-xl"
+        ></i>
+      </div>
+      <div class="mt-3 text-center">
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white">
+          Ban Reason
+        </h3>
+        <div class="mt-2 px-7 py-3">
+          <p
+            id="banReasonText"
+            class="text-sm text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg"
+          ></p>
+          <div class="flex justify-end mt-6">
+            <button
+              type="button"
+              onclick="closeReasonModal()"
+              class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 dark:bg-gray-600 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-500 transition-colors duration-200"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openBanModal(userId, username) {
+    document.getElementById("banUsername").textContent = username;
+    document.getElementById("banUserId").value = userId;
+    document.getElementById("banForm").action = `/admins/ban-user/${userId}/`;
+    document.getElementById("banModal").classList.remove("hidden");
+  }
+
+  function closeBanModal() {
+    document.getElementById("banModal").classList.add("hidden");
+  }
+
+  function showBanReason(reason) {
+    document.getElementById("banReasonText").textContent =
+      reason || "No reason provided";
+    document.getElementById("reasonModal").classList.remove("hidden");
+  }
+
+  function closeReasonModal() {
+    document.getElementById("reasonModal").classList.add("hidden");
+  }
+
+  document.getElementById("banModal").addEventListener("click", function (e) {
+    if (e.target === this) closeBanModal();
+  });
+
+  document
+    .getElementById("reasonModal")
+    .addEventListener("click", function (e) {
+      if (e.target === this) closeReasonModal();
+    });
+</script>
+{% endblock admin_content %}
+
+<!-------------------------------------------->
+
+{% comment %} {% extends "admins/index.html" %} {% load static %} {% block
+admin_content %}
+<div class="p-2 sm:ml-64">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div
+      class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6 border border-gray-200 dark:border-gray-700"
+    >
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+            User Management
+          </h1>
+          <p class="text-gray-600 dark:text-gray-400 mt-1">
+            Manage all users and their account status
+          </p>
+        </div>
+        <div class="text-sm text-gray-500 dark:text-gray-400">
+          Total Users: {{ total_users }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Users Table -->
+    <div
+      class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700"
+    >
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                User
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Email
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Joined Date
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Orders
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Total Spent
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Status
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
+          >
+            {% for data in user_data %}
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 h-10 w-10">
+                    <div
+                      class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold"
+                    >
+                      {{ data.user.username|first|upper }}
+                    </div>
+                  </div>
+                  <div class="ml-4">
+                    <div
+                      class="text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      {{ data.user.username }}
+                    </div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                      {{ data.user.first_name }} {{ data.user.last_name }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900 dark:text-white">
+                  {{ data.user.email }}
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900 dark:text-white">
+                  {{ data.user.date_joined|date:"M d, Y" }}
+                </div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">
+                  {{ data.user.date_joined|timesince }} ago
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900 dark:text-white">
+                  {{ data.orders_count }}
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900 dark:text-white">
+                  Rs. {{ data.total_spent }}
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                {% if data.profile.is_banned %}
+                <span
+                  class="inline-flex px-2 py-1 text-xs font-semibold leading-5 text-red-800 bg-red-100 rounded-full dark:bg-red-800 dark:text-red-100"
+                >
+                  Banned
+                </span>
+                {% if data.profile.ban_reason %}
+                <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  Reason: {{ data.profile.ban_reason }}
+                </div>
+                {% endif %} {% else %}
+                <span
+                  class="inline-flex px-2 py-1 text-xs font-semibold leading-5 text-white-800 bg-green-100 rounded-full dark:bg-green-800 dark:text-green-100"
+                >
+                  Active
+                </span>
+                {% endif %}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                {% if data.profile.is_banned %}
+                <form
+                  method="post"
+                  action="{% url 'unban_user' data.user.id %}"
+                  class="inline"
+                >
+                  {% csrf_token %}
+                  <button
+                    type="submit"
+                    class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 mr-3"
+                  >
+                    Unban
+                  </button>
+                </form>
+                {% else %}
+                <button
+                  onclick="openBanModal({{ data.user.id }}, '{{ data.user.username }}')"
+                  class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 mr-3"
+                >
+                  Ban
+                </button>
+                {% endif %}
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td
+                colspan="7"
+                class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400"
+              >
+                No users found.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ban User Modal -->
+<div
+  id="banModal"
+  class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden"
+>
+  <div
+    class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800"
+  >
+    <div class="mt-3 text-center">
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white">
+        Ban User
+      </h3>
+      <div class="mt-2 px-7 py-3">
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          Are you sure you want to ban
+          <span id="banUsername" class="font-semibold"></span>?
+        </p>
+        <form id="banForm" method="post" class="mt-4">
+          {% csrf_token %}
+          <input type="hidden" name="user_id" id="banUserId" />
+          <div class="mb-4">
+            <label
+              for="ban_reason"
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 text-left"
+              >Reason for ban:</label
+            >
+            <textarea
+              name="ban_reason"
+              id="ban_reason"
+              rows="3"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              placeholder="Enter reason for banning this user..."
+            ></textarea>
+          </div>
+          <div class="flex justify-end space-x-3 mt-4">
+            <button
+              type="button"
+              onclick="closeBanModal()"
+              class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 dark:bg-gray-600 dark:text-gray-300"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+            >
+              Ban User
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openBanModal(userId, username) {
+    document.getElementById("banUsername").textContent = username;
+    document.getElementById("banUserId").value = userId;
+    document.getElementById("banForm").action = `/admins/ban-user/${userId}/`;
+    document.getElementById("banModal").classList.remove("hidden");
+  }
+
+  function closeBanModal() {
+    document.getElementById("banModal").classList.add("hidden");
+  }
+
+  // Close modal when clicking outside
+  document.getElementById("banModal").addEventListener("click", function (e) {
+    if (e.target === this) {
+      closeBanModal();
+    }
+  });
+</script>
+{% endblock admin_content %} {% endcomment %}
